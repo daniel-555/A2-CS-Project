@@ -1,8 +1,6 @@
 import { Title } from "@mantine/core";
-import { useParams } from "react-router-dom";
 
-const CreateUpdateInvoice = () => {
-	const { action } = useParams();
+const CreateUpdateInvoice = ({ action }) => {
 	return <Title order={1}>This is the {action} invoice page</Title>;
 };
 

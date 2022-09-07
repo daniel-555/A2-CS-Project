@@ -1,8 +1,6 @@
 import { Title } from "@mantine/core";
-import { useParams } from "react-router-dom";
 
-const DatabaseQuery = () => {
-	const { collection } = useParams();
+const DatabaseQuery = ({ collection }) => {
 	return <Title order={1}>This is the {collection} query page</Title>;
 };
 
