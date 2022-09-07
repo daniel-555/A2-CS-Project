@@ -1,28 +1,15 @@
-import { Card, SimpleGrid, TextInput, Title } from "@mantine/core";
-import { useState } from "react";
+import { Card, Title } from "@mantine/core";
 import { useParams } from "react-router-dom";
 
 const CreateUpdateCustomer = ({ action }) => {
 	const { customer } = useParams();
-
-	const [invoiceNumber, setInvoiceNumber] = useState();
 	return (
 		<Card className="card center">
-			<form>
-				<SimpleGrid cols={1} spacing="sm">
-					<Title order={1}>
-						{action == "create"
-							? "Create a customer"
-							: `Edit ${customer}'s details`}
-					</Title>
-					<br />
-					<TextInput
-						label="Invoice number"
-						value={invoiceNumber}
-						onChange={(e) => setInvoiceNumber(e.target.value)}
-					/>
-				</SimpleGrid>
-			</form>
+			<Title order={1}>
+				{action === "create"
+					? "Create a Customer"
+					: `Update ${customer}'s Details`}
+			</Title>
 		</Card>
 	);
 };

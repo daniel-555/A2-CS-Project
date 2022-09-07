@@ -1,4 +1,11 @@
-import { Card, SimpleGrid, TextInput, Title, Button } from "@mantine/core";
+import {
+	Card,
+	SimpleGrid,
+	TextInput,
+	Title,
+	Button,
+	Checkbox,
+} from "@mantine/core";
 import { useState } from "react";
 import { BsFillCalendarFill, BsCurrencyPound } from "react-icons/bs";
 const VATReturn = () => {
@@ -44,6 +51,12 @@ const VATReturn = () => {
 						icon={<BsCurrencyPound />}
 						value={totalPurchasesExVat}
 						onChange={(e) => setTotalPurchasesExVat(e.target.value)}
+					/>
+					<br />
+					<Checkbox
+						value={finalised}
+						onChange={setFinalised}
+						label="I confirm this data is correct"
 					/>
 					<br />
 					<Button fullWidth size="lg" color="yellow.6">

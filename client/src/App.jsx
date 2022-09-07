@@ -29,7 +29,7 @@ const App = () => {
 							element={<CreateUpdateInvoice action="create" />}
 						/>
 						<Route
-							path="update"
+							path="update/:invoice"
 							element={<CreateUpdateInvoice action="/update" />}
 						/>
 					</Route>
