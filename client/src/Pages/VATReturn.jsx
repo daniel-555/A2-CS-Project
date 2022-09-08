@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { BsFillCalendarFill, BsCurrencyPound } from "react-icons/bs";
+import HomeButton from "../Components/HomeButton";
 const VATReturn = () => {
 	const [periodKey, setPeriodKey] = useState("");
 	const [vatDueSales, setVatDueSales] = useState(0);
@@ -19,9 +20,9 @@ const VATReturn = () => {
 	return (
 		<Card className="card center">
 			<form>
-				<SimpleGrid cols={1} spacing="sm">
-					<Title order={1}>Submit a VAT return</Title>
-					<br />
+				<Title order={1}>Submit a VAT return</Title>
+				<br />
+				<SimpleGrid cols={2} spacing="sm">
 					<TextInput
 						label="Period key"
 						icon={<BsFillCalendarFill />}
@@ -62,9 +63,7 @@ const VATReturn = () => {
 					<Button fullWidth size="lg" color="yellow.6">
 						Submit
 					</Button>
-					<Button fullWidth size="lg" color="gray.7" variant="outline">
-						Back
-					</Button>
+					<HomeButton />
 				</SimpleGrid>
 			</form>
 		</Card>

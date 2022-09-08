@@ -1,5 +1,15 @@
-import { Card, Select, SimpleGrid, TextInput, Title } from "@mantine/core";
-import { BsHash, BsFillCalendarFill } from "react-icons/bs";
+import {
+	Button,
+	Card,
+	Select,
+	SimpleGrid,
+	Table,
+	TextInput,
+	Title,
+} from "@mantine/core";
+
+// I'm using react-icons for my site's icons, as they have a large variety.
+import { BsHash, BsFillCalendarFill, BsFillTrashFill } from "react-icons/bs";
 import { IoMdMail } from "react-icons/io";
 import { DatePicker } from "@mantine/dates";
 import { useState } from "react";
@@ -8,6 +18,7 @@ import { useParams } from "react-router-dom";
 const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
 
+	// Filler data for customer selection, will be filled with actual customers in future
 	const customerData = Array(50)
 		.fill(0)
 		.map((_, index) => `Customer ${index}`);
@@ -24,6 +35,8 @@ const CreateUpdateInvoice = ({ action }) => {
 		{ label: "Zero", value: "0" },
 	];
 
+	// React state variables for the form, these are the variables that
+	// will be sent to the server in a database post/patch request
 	const [invoiceNumber, setInvoiceNumber] = useState();
 	const [selectedCustomer, setSelectedCustomer] = useState(null);
 	const [termsOfTrade, setTermsOfTrade] = useState(null);
@@ -33,17 +46,49 @@ const CreateUpdateInvoice = ({ action }) => {
 	const [makeModelReg, setMakeModelReg] = useState("");
 	const [preInspection, setPreInspection] = useState("");
 	const [orderNumber, setOrderNumber] = useState("");
+	const [invoiceItems, setInvoiceItems] = useState([]);
+
+	const testItem = {
+		id: 0,
+		service: "Fit only",
+		description: "Mercedes turismo screen",
+		quantity: 1,
+		vatRate: "20%",
+		price: "£650",
+		vat: `£${650 * 0.2}`,
+		date: new Date(),
+	};
+
+	const rows = invoiceItems.map((item) => (
+		<tr key={item.id}>
+			<td>{item.service}</td>
+			<td>{item.description}</td>
+			<td>{item.quantity}</td>
+			<td>{item.vatRate}</td>
+			<td>{item.price}</td>
+			<td>{item.vat}</td>
+			<td>{item.date.toDateString()}</td>
+			<td>
+				<Button color="red.7" variant="outline" size="xs">
+					<BsFillTrashFill />
+				</Button>
+			</td>
+		</tr>
+	));
 
 	return (
+		// This is the final rendered page
 		<Card className="card center">
 			<form>
 				<Title order={1}>
+					{/** This is a ternary operator, javascript's one liner solution to if statements. For this page's purpose, I'm using it to decide the page's title depending whether data is being created or updated. */}
 					{action === "create"
 						? "Create an Invoice"
 						: `Edit Invoice ${invoice}`}
 				</Title>
 				<br />
-				<SimpleGrid cols={2} spacing="sm">
+				{/** The SimpleGrid component allows easy layout of inputs in the form */}
+				<SimpleGrid cols={3} spacing="sm">
 					<TextInput
 						label="Invoice number"
 						icon={<BsHash />}
@@ -102,6 +147,30 @@ const CreateUpdateInvoice = ({ action }) => {
 						onChange={(e) => setOrderNumber(e.target.value)}
 					/>
 				</SimpleGrid>
+				<br />
+				<Table>
+					<thead>
+						<tr>
+							<th>Product/Service</th>
+							<th>Description</th>
+							<th>Qty</th>
+							<th>VAT Rate</th>
+							<th>Amount</th>
+							<th>VAT</th>
+							<th>Date</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>{rows}</tbody>
+				</Table>
+				<br />
+				<Button
+					onClick={() => {
+						setInvoiceItems([...invoiceItems, testItem]);
+					}}
+				>
+					Add item
+				</Button>
 			</form>
 		</Card>
 	);
