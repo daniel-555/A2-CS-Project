@@ -4,6 +4,7 @@ import {
 	Select,
 	SimpleGrid,
 	Table,
+	Text,
 	TextInput,
 	Title,
 } from "@mantine/core";
@@ -14,6 +15,9 @@ import { IoMdMail } from "react-icons/io";
 import { DatePicker } from "@mantine/dates";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { openModal } from "@mantine/modals";
+import InvoiceItemModal from "../Components/CreateUpdateInvoice/InvoiceItemModal";
+import HomeButton from "../Components/HomeButton";
 
 const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
@@ -29,12 +33,6 @@ const CreateUpdateInvoice = ({ action }) => {
 		{ label: "On Receipt", value: "0" },
 	];
 
-	const vatRateData = [
-		{ label: "20%", value: "20" },
-		{ label: "Exempt", value: "NA" },
-		{ label: "Zero", value: "0" },
-	];
-
 	// React state variables for the form, these are the variables that
 	// will be sent to the server in a database post/patch request
 	const [invoiceNumber, setInvoiceNumber] = useState();
@@ -42,37 +40,55 @@ const CreateUpdateInvoice = ({ action }) => {
 	const [termsOfTrade, setTermsOfTrade] = useState(null);
 	const [dateCreated, setDateCreated] = useState(new Date());
 	const [emails, setEmails] = useState("");
-	const [vatRate, setVatRate] = useState(null);
 	const [makeModelReg, setMakeModelReg] = useState("");
 	const [preInspection, setPreInspection] = useState("");
 	const [orderNumber, setOrderNumber] = useState("");
 	const [invoiceItems, setInvoiceItems] = useState([]);
+	const [itemCounter, setItemCounter] = useState(0);
 
-	const testItem = {
-		id: 0,
-		service: "Fit only",
-		description: "Mercedes turismo screen",
-		quantity: 1,
-		vatRate: "20%",
-		price: "£650",
-		vat: `£${650 * 0.2}`,
-		date: new Date(),
+	const [netPrice, setNetPrice] = useState(0);
+	const [vatPrice, setVatPrice] = useState(0);
+
+	// This function is responsible for opening the add item form & adding the submitted item
+	// to the list invoiceItems
+	const addItem = () => {
+		// This callback function allows the InvoiceItemModal component to alter the state
+		// of its parent component.
+		const addItemCallback = (newItem) => {
+			setInvoiceItems([...invoiceItems, newItem]);
+			setItemCounter(itemCounter + 1);
+
+			setNetPrice(netPrice + newItem.price);
+			setVatPrice(vatPrice + newItem.vat);
+		};
+
+		openModal({
+			title: <Title order={1}>Add an Item</Title>,
+			centered: true,
+			children: (
+				<InvoiceItemModal callback={addItemCallback} id={itemCounter} />
+			),
+			size: "lg",
+		});
 	};
 
+	const resetInvoiceItems = () => {
+		setInvoiceItems([]);
+		setNetPrice(0);
+		setVatPrice(0);
+	};
+
+	// This array stores the invoice items formatted into table rows, which can be supplied
+	// as the table's body
 	const rows = invoiceItems.map((item) => (
 		<tr key={item.id}>
 			<td>{item.service}</td>
 			<td>{item.description}</td>
 			<td>{item.quantity}</td>
 			<td>{item.vatRate}</td>
-			<td>{item.price}</td>
-			<td>{item.vat}</td>
+			<td>{item.price.toFixed(2)}</td>
+			<td>{item.vat.toFixed(2)}</td>
 			<td>{item.date.toDateString()}</td>
-			<td>
-				<Button color="red.7" variant="outline" size="xs">
-					<BsFillTrashFill />
-				</Button>
-			</td>
 		</tr>
 	));
 
@@ -88,12 +104,13 @@ const CreateUpdateInvoice = ({ action }) => {
 				</Title>
 				<br />
 				{/** The SimpleGrid component allows easy layout of inputs in the form */}
-				<SimpleGrid cols={3} spacing="sm">
+				<SimpleGrid cols={2} spacing="sm">
 					<TextInput
 						label="Invoice number"
 						icon={<BsHash />}
 						value={invoiceNumber}
 						onChange={(e) => setInvoiceNumber(e.target.value)}
+						disabled={action === "update"}
 					/>
 					<Select
 						label="Customer name"
@@ -103,6 +120,7 @@ const CreateUpdateInvoice = ({ action }) => {
 						data={customerData}
 						value={selectedCustomer}
 						onChange={setSelectedCustomer}
+						disabled={action === "update"}
 					/>
 					<Select
 						label="Terms of trade"
@@ -116,15 +134,10 @@ const CreateUpdateInvoice = ({ action }) => {
 						icon={<IoMdMail />}
 						placeholder="Separate emails with a comma"
 						value={emails}
+						// This line of code allows the text input to be stored in state
 						onChange={(e) => setEmails(e.target.value)}
 					/>
-					<Select
-						label="VAT rate"
-						placeholder="pick an option"
-						data={vatRateData}
-						value={vatRate}
-						onChange={setVatRate}
-					/>
+
 					<TextInput
 						label="Make/Model/Registration"
 						value={makeModelReg}
@@ -135,6 +148,7 @@ const CreateUpdateInvoice = ({ action }) => {
 						icon={<BsFillCalendarFill />}
 						value={dateCreated}
 						onChange={setDateCreated}
+						disabled={action === "update"}
 					/>
 					<TextInput
 						label="Pre Inspection/Mileage"
@@ -155,22 +169,48 @@ const CreateUpdateInvoice = ({ action }) => {
 							<th>Description</th>
 							<th>Qty</th>
 							<th>VAT Rate</th>
-							<th>Amount</th>
+							<th>Price</th>
 							<th>VAT</th>
 							<th>Date</th>
-							<th></th>
+							<th>
+								{/* This button deletes all of the invoice items and is only
+									visable when creating an invoice */}
+								{action === "create" && (
+									<Button
+										color="red"
+										variant="outline"
+										onClick={resetInvoiceItems}
+										size="xs"
+									>
+										<BsFillTrashFill />
+									</Button>
+								)}
+							</th>
 						</tr>
 					</thead>
 					<tbody>{rows}</tbody>
 				</Table>
 				<br />
-				<Button
-					onClick={() => {
-						setInvoiceItems([...invoiceItems, testItem]);
-					}}
-				>
-					Add item
-				</Button>
+				{/* This button opens the add item modal and is only visable when creating an invoice */}
+				{action === "create" && (
+					<Button onClick={() => addItem()} color="yellow.6">
+						Add item
+					</Button>
+				)}
+				<br />
+				<br />
+				<Text size="xl">Net: £{netPrice.toFixed(2)}</Text>
+				<Text size="xl">VAT: £{vatPrice.toFixed(2)}</Text>
+				<Title order={3}>
+					Balance Due: £{(netPrice + vatPrice).toFixed(2)}
+				</Title>
+				<br />
+				<SimpleGrid cols={2}>
+					<Button color="yellow.6" size="lg">
+						{action === "create" ? "Submit" : "Update"}
+					</Button>
+					<HomeButton />
+				</SimpleGrid>
 			</form>
 		</Card>
 	);

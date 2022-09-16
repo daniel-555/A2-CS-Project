@@ -31,8 +31,9 @@ const App = () => {
 								element={<CreateUpdateInvoice action="create" />}
 							/>
 							<Route
+								// the :invoice parameter is a user input in the url
 								path="update/:invoice"
-								element={<CreateUpdateInvoice action="/update" />}
+								element={<CreateUpdateInvoice action="update" />} // Typo Fixed
 							/>
 						</Route>
 						<Route path="/database">
