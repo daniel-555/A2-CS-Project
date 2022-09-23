@@ -108,7 +108,7 @@ const CreateUpdateInvoice = ({ action }) => {
 					<TextInput
 						label="Invoice number"
 						icon={<BsHash />}
-						value={invoiceNumber}
+						value={action === "create" ? invoiceNumber : invoice}
 						onChange={(e) => setInvoiceNumber(e.target.value)}
 						disabled={action === "update"}
 					/>

@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { BsFillCalendarFill, BsCurrencyPound } from "react-icons/bs";
 import HomeButton from "../Components/HomeButton";
+
 const VATReturn = () => {
 	const [periodKey, setPeriodKey] = useState("");
 	const [vatDueSales, setVatDueSales] = useState(0);
@@ -69,6 +70,7 @@ const VATReturn = () => {
 		</Card>
 	);
 };
+
 // This page will allow the user to submit a VAT return to HMRC, putting them through the necessary authentication to do so.
 
 export default VATReturn;

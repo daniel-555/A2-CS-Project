@@ -13,7 +13,7 @@ const HomeButton = () => {
 			variant="outline"
 			onClick={handleClick}
 		>
-			Back
+			Home
 		</Button>
 	);
 };
