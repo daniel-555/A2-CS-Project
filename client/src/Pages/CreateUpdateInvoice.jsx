@@ -169,7 +169,7 @@ const CreateUpdateInvoice = ({ action }) => {
 							<th>Description</th>
 							<th>Qty</th>
 							<th>VAT Rate</th>
-							<th>Price</th>
+							<th>Net Price</th>
 							<th>VAT</th>
 							<th>Date</th>
 							<th>

@@ -17,7 +17,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 	const [description, setDescription] = useState("");
 	const [quantity, setQuantity] = useState(1);
 	const [vatRate, setVatRate] = useState(null);
-	const [amount, setAmount] = useState(0);
+	const [price, setPrice] = useState(0);
 	const [dateCreated, setDateCreated] = useState(new Date());
 
 	const vatRateData = [
@@ -54,7 +54,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 	};
 
 	// These variables update in real time when the state of the form is changed
-	let netPrice = amount * quantity;
+	let netPrice = price * quantity;
 	let vatPrice = netPrice * (vatRate === "NA" ? 0 : vatRate);
 	let total = netPrice + vatPrice;
 
@@ -80,10 +80,10 @@ const InvoiceItemModal = ({ callback, id }) => {
 						onChange={setVatRate}
 					/>
 					<NumberInput
-						label="Amount"
+						label="Price"
 						icon={<BsCurrencyPound />}
-						value={amount}
-						onChange={(e) => setAmount(e)}
+						value={price}
+						onChange={(e) => setPrice(e)}
 					/>
 					<DatePicker
 						label="Date of job"
