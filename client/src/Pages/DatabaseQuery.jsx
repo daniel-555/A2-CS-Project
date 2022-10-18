@@ -5,8 +5,6 @@ import { TextInput } from "@mantine/core";
 import { useState } from "react";
 import HomeButton from "../Components/HomeButton";
 
-//Put Search field in this file
-
 const DatabaseQuery = ({ collection }) => {
 	const [search, setSearch] = useState("");
 

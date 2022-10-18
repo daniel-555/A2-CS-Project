@@ -9,7 +9,7 @@ const CreateUpdateCustomer = ({ action }) => {
 
 	const [companyName, setCompanyName] = useState();
 	const [addressLine1, setAddressLine1] = useState();
-	const [addressLine2, setAddressLine2] = useState("");
+	const [addressLine2, setAddressLine2] = useState();
 	const [postcode, setPostcode] = useState();
 	const [contactNo, setContactNo] = useState();
 	const [email, setEmail] = useState();
