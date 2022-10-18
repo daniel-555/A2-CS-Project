@@ -9,12 +9,18 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDMDPQdngJuUi3Nd4XKZqw_OCjAusvtlDc",
+
 	authDomain: "a-level-cs-project-ae8a3.firebaseapp.com",
+
 	projectId: "a-level-cs-project-ae8a3",
+
 	storageBucket: "a-level-cs-project-ae8a3.appspot.com",
+
 	messagingSenderId: "719995149392",
-	appId: "1:719995149392:web:2c4ac084f13a7c15588555",
-	measurementId: "G-GXTJ8SN3CE",
+
+	appId: "1:719995149392:web:dc072e48edf12d17588555",
+
+	measurementId: "G-SV68FV78GS",
 };
 
 // Initialize Firebase
