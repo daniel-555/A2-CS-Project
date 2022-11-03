@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { openModal } from "@mantine/modals";
 import InvoiceItemModal from "../Components/CreateUpdateInvoice/InvoiceItemModal";
 import HomeButton from "../Components/HomeButton";
+import InvoiceItemTable from "../Components/CreateUpdateInvoice/InvoiceItemTable";
 
 const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
@@ -77,20 +78,6 @@ const CreateUpdateInvoice = ({ action }) => {
 		setNetPrice(0);
 		setVatPrice(0);
 	};
-
-	// This array stores the invoice items formatted into table rows, which can be supplied
-	// as the table's body
-	const rows = invoiceItems.map((item) => (
-		<tr key={item.id}>
-			<td>{item.service}</td>
-			<td>{item.description}</td>
-			<td>{item.quantity}</td>
-			<td>{item.vatRate}</td>
-			<td>{item.price.toFixed(2)}</td>
-			<td>{item.vat.toFixed(2)}</td>
-			<td>{item.date.toDateString()}</td>
-		</tr>
-	));
 
 	return (
 		// This is the final rendered page
@@ -162,34 +149,10 @@ const CreateUpdateInvoice = ({ action }) => {
 					/>
 				</SimpleGrid>
 				<br />
-				<Table>
-					<thead>
-						<tr>
-							<th>Product/Service</th>
-							<th>Description</th>
-							<th>Qty</th>
-							<th>VAT Rate</th>
-							<th>Net Price</th>
-							<th>VAT</th>
-							<th>Date</th>
-							<th>
-								{/* This button deletes all of the invoice items and is only
-									visable when creating an invoice */}
-								{action === "create" && (
-									<Button
-										color="red"
-										variant="outline"
-										onClick={resetInvoiceItems}
-										size="xs"
-									>
-										<BsFillTrashFill />
-									</Button>
-								)}
-							</th>
-						</tr>
-					</thead>
-					<tbody>{rows}</tbody>
-				</Table>
+				<InvoiceItemTable
+					invoiceItems={invoiceItems}
+					resetItemsCallback={resetInvoiceItems}
+				/>
 				<br />
 				{/* This button opens the add item modal and is only visable when creating an invoice */}
 				{action === "create" && (

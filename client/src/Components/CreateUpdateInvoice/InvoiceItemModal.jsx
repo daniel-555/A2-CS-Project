@@ -59,7 +59,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 	let total = netPrice + vatPrice;
 
 	return (
-		<div className="card">
+		<div>
 			<form>
 				<SimpleGrid cols={2} spacing="sm">
 					<TextInput
