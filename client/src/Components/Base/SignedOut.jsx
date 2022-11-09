@@ -1,8 +1,8 @@
-// UI-related modules
+// UI-related
 import { Button, Card, Title } from "@mantine/core";
 import { FcGoogle } from "react-icons/fc";
 
-// Firebase (backend) modules
+// Firebase (backend)
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebase-init";
 

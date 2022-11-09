@@ -1,9 +1,9 @@
-// UI-related modules
-import { Affix, Button, CheckIcon } from "@mantine/core";
+// UI-related
+import { Affix, Button } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { AiOutlineCheck } from "react-icons/ai";
 
-// Firebase (backend) modules
+// Firebase (backend)
 import { auth } from "../firebase/firebase-init";
 import { signOut } from "firebase/auth";
 

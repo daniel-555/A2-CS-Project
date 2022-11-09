@@ -1,9 +1,9 @@
-// UI-related modules
+// UI-related
 import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 import { MantineProvider } from "@mantine/core";
 
-// Firebase (backend) modules
+// Firebase (backend)
 import { auth } from "./firebase/firebase-init";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -12,6 +12,7 @@ import SignedIn from "./Components/Base/SignedIn";
 import SignedOut from "./Components/Base/SignedOut";
 
 const App = () => {
+	// This code checks whether or not the user is signed in
 	const [user] = useAuthState(auth);
 
 	return (
@@ -23,9 +24,10 @@ const App = () => {
 			</ModalsProvider>
 		</MantineProvider>
 	);
-	return <SignedIn />;
+	// Test code to override the sign in feature.
+	// return <SignedIn />;
 };
 
-// This file is the base of the whole application. It routes all of the different pages to the code each one should run.
+// This file is the base of the whole application.
 
 export default App;

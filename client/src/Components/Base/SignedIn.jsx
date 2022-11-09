@@ -1,6 +1,4 @@
-// UI-related modules
-
-// Page routing modules
+// Page routing
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Pages
