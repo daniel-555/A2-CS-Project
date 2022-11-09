@@ -1,18 +1,51 @@
-import { Card, SimpleGrid, Title, TextInput, Button } from "@mantine/core";
+// React
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+
+// UI-related
+import { Card, SimpleGrid, Title, TextInput, Button } from "@mantine/core";
 import { BsAt, BsCursor, BsPersonSquare, BsTelephone } from "react-icons/bs";
+
+// Routing
+import { useParams } from "react-router-dom";
+
+// Components
 import HomeButton from "../Components/HomeButton";
+
+// Functions
+import createCustomer from "../Functions/CreateUpdateCustomer/createCustomer";
 
 const CreateUpdateCustomer = ({ action }) => {
 	const { customer } = useParams();
 
-	const [companyName, setCompanyName] = useState();
-	const [addressLine1, setAddressLine1] = useState();
-	const [addressLine2, setAddressLine2] = useState();
-	const [postcode, setPostcode] = useState();
-	const [contactNo, setContactNo] = useState();
-	const [email, setEmail] = useState();
+	const [companyName, setCompanyName] = useState("");
+	const [addressLine1, setAddressLine1] = useState("");
+	const [addressLine2, setAddressLine2] = useState("");
+	const [postcode, setPostcode] = useState("");
+	const [contactNo, setContactNo] = useState("");
+	const [email, setEmail] = useState("");
+
+	const handleSubmit = () => {
+		const customerData = {
+			addressLine1,
+			addressLine2,
+			companyName,
+			contactNo,
+			email,
+			postcode,
+		};
+
+		if (action === "create") {
+			createCustomer(customerData);
+
+			// Clear all the forms so data cannot be double submitted
+			setCompanyName("");
+			setAddressLine1("");
+			setAddressLine2("");
+			setPostcode("");
+			setContactNo("");
+			setEmail("");
+		}
+	};
 
 	return (
 		<Card className="card center">
@@ -62,7 +95,7 @@ const CreateUpdateCustomer = ({ action }) => {
 				<br />
 				<br />
 				<SimpleGrid cols={2}>
-					<Button color="yellow.6" size="lg">
+					<Button color="yellow.6" size="lg" onClick={handleSubmit}>
 						{action === "create" ? "Submit" : "Update"}
 					</Button>
 					<HomeButton />
