@@ -26,7 +26,7 @@ const SignedIn = () => {
 							element={<CreateUpdateCustomer action="create" />}
 						/>
 						<Route
-							path="update/:customer"
+							path="update/:customerID"
 							element={<CreateUpdateCustomer action="update" />}
 						/>
 					</Route>

@@ -4,28 +4,28 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 
 // Firebase (backend)
 import { db } from "../../firebase/firebase-init";
-import { addDoc, collection } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 
-const createCustomer = (customerData) => {
+const updateCustomer = (customerID, customerData) => {
+	const docRef = doc(db, "Customers", customerID);
+
 	showNotification({
-		id: "await-add",
+		id: "await-update",
 		title: "Form submitted",
-		message: "Adding customer to database",
+		message: "Updateing customer info",
 		loading: true,
 		autoClose: false,
 		disallowClose: true,
 	});
 
-	const collectionRef = collection(db, "Customers");
-
-	addDoc(collectionRef, customerData).then(() =>
+	setDoc(docRef, customerData).then(() =>
 		updateNotification({
-			id: "await-add",
-			title: "Customer added",
+			id: "await-update",
+			title: "Customer updated",
 			icon: <AiOutlineCheck />,
 			color: "teal",
 		})
 	);
 };
 
-export default createCustomer;
+export default updateCustomer;
