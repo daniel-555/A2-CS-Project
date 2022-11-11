@@ -24,19 +24,23 @@ import getCustomerInfo from "../Functions/CreateUpdateCustomer/getCustomerInfo";
 const CreateUpdateCustomer = ({ action }) => {
 	const { customerID } = useParams();
 
-	// Refactor into an object _____
-	const [companyName, setCompanyName] = useState("");
-	const [addressLine1, setAddressLine1] = useState("");
-	const [addressLine2, setAddressLine2] = useState("");
-	const [postcode, setPostcode] = useState("");
-	const [contactNo, setContactNo] = useState("");
-	const [email, setEmail] = useState("");
+	const customerDefault = {
+		companyName: "",
+		addressLine1: "",
+		addressLine2: "",
+		postcode: "",
+		contactNo: "",
+		email: "",
+	};
+
+	const [customerData, setCustomerData] = useState(customerDefault);
 
 	// Generalised function to change state in the form.
 	// maxLength input is to limit the length of strings that shouldn't be long
-	const changeState = (element, updateFunction, maxLength = 10) => {
-		if (element.length <= maxLength) {
-			updateFunction(element);
+	// the default maximum is 10 characters
+	const changeState = (value, key, maxLength = 10) => {
+		if (value.length <= maxLength) {
+			setCustomerData((customerData) => ({ ...customerData, [key]: value }));
 		}
 	};
 
@@ -45,11 +49,11 @@ const CreateUpdateCustomer = ({ action }) => {
 		// validate that fields are in the correct format
 		let formOk = true;
 
-		if (validateEmail(email) === false) {
+		if (validateEmail(customerData.email) === false) {
 			invalidNotification("Email");
 			formOk = false;
 		}
-		if (validateMobile(contactNo) === false) {
+		if (validateMobile(customerData.contactNo) === false) {
 			invalidNotification("Mobile");
 			formOk = false;
 		}
@@ -57,25 +61,11 @@ const CreateUpdateCustomer = ({ action }) => {
 		// Break from the function if an error was detected above
 		if (formOk === false) return;
 
-		const customerData = {
-			addressLine1,
-			addressLine2,
-			companyName,
-			contactNo,
-			email,
-			postcode,
-		};
-
 		if (action === "create") {
 			createCustomer(customerData);
 
 			// Clear all the forms so data cannot be double submitted
-			setCompanyName("");
-			setAddressLine1("");
-			setAddressLine2("");
-			setPostcode("");
-			setContactNo("");
-			setEmail("");
+			setCustomerData(customerDefault);
 		}
 		if (action === "update") {
 			updateCustomer(customerID, customerData);
@@ -85,15 +75,9 @@ const CreateUpdateCustomer = ({ action }) => {
 	// Runs when the page is "mounted" (ie when it is first loaded)
 	useEffect(() => {
 		const fetchData = async () => {
-			const customerData = await getCustomerInfo(customerID);
+			const fetchedData = await getCustomerInfo(customerID);
 
-			// Refactor to object
-			setCompanyName(customerData.companyName);
-			setAddressLine1(customerData.addressLine1);
-			setAddressLine2(customerData.addressLine2);
-			setPostcode(customerData.postcode);
-			setContactNo(customerData.contactNo);
-			setEmail(customerData.email);
+			setCustomerData(fetchedData);
 		};
 
 		// Only get customer data when on the update page
@@ -106,78 +90,74 @@ const CreateUpdateCustomer = ({ action }) => {
 				<Title order={1}>
 					{action === "create"
 						? "Create a Customer"
-						: `Update ${companyName}'s Details`}
+						: `Update ${customerData.companyName}'s Details`}
 				</Title>
 				<br />
 				<SimpleGrid cols={2} spacing="sm">
 					<TextInput
 						label="Company Name"
-						value={companyName}
+						value={customerData.companyName}
 						icon={<BsPersonSquare />}
 						onChange={(e) =>
 							changeState(
 								e.target.value,
-								setCompanyName,
+								"companyName",
 								fieldMaxLengths.companyName
 							)
 						}
 					/>
 					<TextInput
 						label="Postcode"
-						value={postcode}
+						value={customerData.postcode}
 						icon={<BsCursor />}
 						onChange={(e) =>
 							changeState(
 								e.target.value,
-								setPostcode,
+								"postcode",
 								fieldMaxLengths.postcode
 							)
 						}
 					/>
 					<TextInput
 						label="Address Line 1"
-						value={addressLine1}
+						value={customerData.addressLine1}
 						onChange={(e) => {
 							changeState(
 								e.target.value,
-								setAddressLine1,
+								"addressLine1",
 								fieldMaxLengths.addressLine
 							);
 						}}
 					/>
 					<TextInput
 						label="Address Line 2 (optional)"
-						value={addressLine2}
+						value={customerData.addressLine2}
 						onChange={(e) =>
 							changeState(
 								e.target.value,
-								setAddressLine2,
+								"addressLine2",
 								fieldMaxLengths.addressLine
 							)
 						}
 					/>
 					<TextInput
 						label="Contact Number"
-						value={contactNo}
+						value={customerData.contactNo}
 						icon={<BsTelephone />}
 						onChange={(e) =>
 							changeState(
 								e.target.value,
-								setContactNo,
+								"contactNo",
 								fieldMaxLengths.contactNo
 							)
 						}
 					/>
 					<TextInput
 						label="Email Address"
-						value={email}
+						value={customerData.email}
 						icon={<BsAt />}
 						onChange={(e) =>
-							changeState(
-								e.target.value,
-								setEmail,
-								fieldMaxLengths.email
-							)
+							changeState(e.target.value, "email", fieldMaxLengths.email)
 						}
 					/>
 				</SimpleGrid>
