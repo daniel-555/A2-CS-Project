@@ -3,15 +3,13 @@ import {
 	Card,
 	Select,
 	SimpleGrid,
-	Table,
 	Text,
 	TextInput,
 	Title,
 } from "@mantine/core";
 
 // I'm using react-icons for my site's icons, as they have a large variety.
-import { BsHash, BsFillCalendarFill, BsFillTrashFill } from "react-icons/bs";
-import { IoMdMail } from "react-icons/io";
+import { BsHash, BsFillCalendarFill, BsAt } from "react-icons/bs";
 import { DatePicker } from "@mantine/dates";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -19,6 +17,7 @@ import { openModal } from "@mantine/modals";
 import InvoiceItemModal from "../Components/CreateUpdateInvoice/InvoiceItemModal";
 import HomeButton from "../Components/HomeButton";
 import InvoiceItemTable from "../Components/CreateUpdateInvoice/InvoiceItemTable";
+import fieldMaxLengths from "../Validation/FieldMaxLengths";
 
 const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
@@ -37,10 +36,10 @@ const CreateUpdateInvoice = ({ action }) => {
 	// React state variables for the form, these are the variables that
 	// will be sent to the server in a database post/patch request
 	const [invoiceNumber, setInvoiceNumber] = useState();
-	const [selectedCustomer, setSelectedCustomer] = useState(null);
+	const [customer, setCustomer] = useState(null);
 	const [termsOfTrade, setTermsOfTrade] = useState(null);
 	const [dateCreated, setDateCreated] = useState(new Date());
-	const [emails, setEmails] = useState("");
+	const [email, setEmail] = useState("");
 	const [makeModelReg, setMakeModelReg] = useState("");
 	const [preInspection, setPreInspection] = useState("");
 	const [orderNumber, setOrderNumber] = useState("");
@@ -73,6 +72,22 @@ const CreateUpdateInvoice = ({ action }) => {
 		});
 	};
 
+	const changeState = (value, setFunction, maxLength = 10) => {
+		if (value.length > maxLength) return;
+
+		setFunction(value);
+	};
+
+	const handleSubmit = () => {
+		const invoiceData = {
+			invoiceNumber,
+			customer,
+			termsOfTrade,
+			customerData,
+			/// HERE
+		};
+	};
+
 	const resetInvoiceItems = () => {
 		setInvoiceItems([]);
 		setNetPrice(0);
@@ -96,17 +111,23 @@ const CreateUpdateInvoice = ({ action }) => {
 						label="Invoice number"
 						icon={<BsHash />}
 						value={action === "create" ? invoiceNumber : invoice}
-						onChange={(e) => setInvoiceNumber(e.target.value)}
+						onChange={(e) =>
+							changeState(
+								e.target.value,
+								setInvoiceNumber,
+								fieldMaxLengths.invoiceNumber
+							)
+						}
 						disabled={action === "update"}
 					/>
 					<Select
-						label="Customer name"
+						label="Customer"
 						placeholder="pick an option"
 						searchable
 						nothingFound="No customers with that name"
 						data={customerData}
-						value={selectedCustomer}
-						onChange={setSelectedCustomer}
+						value={customer}
+						onChange={setCustomer}
 						disabled={action === "update"}
 					/>
 					<Select
@@ -117,18 +138,29 @@ const CreateUpdateInvoice = ({ action }) => {
 						onChange={setTermsOfTrade}
 					/>
 					<TextInput
-						label="Emails"
-						icon={<IoMdMail />}
-						placeholder="Separate emails with a comma"
-						value={emails}
+						label="Email Address"
+						icon={<BsAt />}
+						value={email}
 						// This line of code allows the text input to be stored in state
-						onChange={(e) => setEmails(e.target.value)}
+						onChange={(e) =>
+							changeState(
+								e.target.value,
+								setEmail,
+								fieldMaxLengths.email
+							)
+						}
 					/>
 
 					<TextInput
 						label="Make/Model/Registration"
 						value={makeModelReg}
-						onChange={(e) => setMakeModelReg(e.target.value)}
+						onChange={(e) =>
+							changeState(
+								e.target.value,
+								setMakeModelReg,
+								fieldMaxLengths.makeModelReg
+							)
+						}
 					/>
 					<DatePicker
 						label="Date created"
@@ -140,12 +172,18 @@ const CreateUpdateInvoice = ({ action }) => {
 					<TextInput
 						label="Pre Inspection/Mileage"
 						value={preInspection}
-						onChange={(e) => setPreInspection(e.target.value)}
+						onChange={(e) =>
+							changeState(
+								e.target.value,
+								setPreInspection,
+								fieldMaxLengths.preInspection
+							)
+						}
 					/>
 					<TextInput
 						label="Order number"
 						value={orderNumber}
-						onChange={(e) => setOrderNumber(e.target.value)}
+						onChange={(e) => changeState(e.target.value, setOrderNumber)}
 					/>
 				</SimpleGrid>
 				<br />

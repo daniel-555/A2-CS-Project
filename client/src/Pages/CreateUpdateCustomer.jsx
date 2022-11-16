@@ -26,8 +26,8 @@ const CreateUpdateCustomer = ({ action }) => {
 
 	const customerDefault = {
 		companyName: "",
-		addressLine1: "",
-		addressLine2: "",
+		address1: "",
+		address2: "",
 		postcode: "",
 		contactNo: "",
 		email: "",
@@ -120,22 +120,22 @@ const CreateUpdateCustomer = ({ action }) => {
 					/>
 					<TextInput
 						label="Address Line 1"
-						value={customerData.addressLine1}
+						value={customerData.address1}
 						onChange={(e) => {
 							changeState(
 								e.target.value,
-								"addressLine1",
-								fieldMaxLengths.addressLine
+								"address1",
+								fieldMaxLengths.address
 							);
 						}}
 					/>
 					<TextInput
 						label="Address Line 2 (optional)"
-						value={customerData.addressLine2}
+						value={customerData.address2}
 						onChange={(e) =>
 							changeState(
 								e.target.value,
-								"addressLine2",
+								"address2",
 								fieldMaxLengths.addressLine
 							)
 						}

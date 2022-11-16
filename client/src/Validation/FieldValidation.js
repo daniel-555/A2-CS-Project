@@ -23,3 +23,13 @@ export const validateMobile = (number) => {
 		return false;
 	}
 };
+
+export const validateInvoiceNumber = (invoiceNumber) => {
+	const validNumber = /^INV[0-9]{4}$/;
+
+	if (invoiceNumber.match(validNumber)) {
+		return true;
+	} else {
+		return false;
+	}
+};

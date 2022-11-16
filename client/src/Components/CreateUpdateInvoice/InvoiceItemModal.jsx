@@ -18,7 +18,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 	const [quantity, setQuantity] = useState(1);
 	const [vatRate, setVatRate] = useState(null);
 	const [price, setPrice] = useState(0);
-	const [dateCreated, setDateCreated] = useState(new Date());
+	const [date, setDate] = useState(new Date());
 
 	const vatRateData = [
 		{ label: "20%", value: 0.2 },
@@ -48,7 +48,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 			vatRate: formattedVatRate,
 			price: netPrice,
 			vat: vatPrice,
-			date: dateCreated,
+			date,
 		});
 		closeAllModals();
 	};
@@ -82,14 +82,15 @@ const InvoiceItemModal = ({ callback, id }) => {
 					<NumberInput
 						label="Price"
 						icon={<BsCurrencyPound />}
+						precision={2}
 						value={price}
 						onChange={(e) => setPrice(e)}
 					/>
 					<DatePicker
 						label="Date of job"
 						icon={<BsFillCalendarFill />}
-						value={dateCreated}
-						onChange={setDateCreated}
+						value={date}
+						onChange={setDate}
 					/>
 					<Textarea
 						label="Description"
