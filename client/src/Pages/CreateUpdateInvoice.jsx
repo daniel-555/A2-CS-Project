@@ -26,8 +26,18 @@ import HomeButton from "../Components/HomeButton";
 
 // Validation
 import fieldMaxLengths from "../Validation/FieldMaxLengths";
+import {
+	validateEmail,
+	validateInvoiceNumber,
+} from "../Validation/FieldValidation";
+
+// Firebase (backend)
 import { collection, getDoc, getDocs, query, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase-init";
+
+// Functions
+import { invalidNotification } from "../Functions/presetNotifications";
+import createInvoice from "../Functions/CreateUpdateInvoice/createInvoice";
 
 const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
@@ -107,12 +117,41 @@ const CreateUpdateInvoice = ({ action }) => {
 
 	// Executes when submit button is pressed
 	const handleSubmit = () => {
+		let formOk = true;
+
+		if (validateInvoiceNumber(invoiceNumber) === false) {
+			formOk = false;
+			invalidNotification("Invoice Number");
+		}
+		if (!validateEmail(email)) {
+			formOk = false;
+			invalidNotification("Email");
+		}
+
+		if (formOk === false) return;
+
 		const invoiceData = {
-			invoiceNumber,
-			customer,
+			// Database reference to customer
+			customer: doc(db, "Customers", customer),
 			termsOfTrade,
-			customerData,
+			dateCreated,
+			// Add the terms of trade days to the date the invoice was created
+			dateDue: new Date(dateCreated).setDate(
+				dateCreated.getDate() + termsOfTrade
+			),
+			email,
+			makeModelReg,
+			preInspection,
+			orderNumber,
+			invoiceItems,
+			paid: false,
+			datePaid: null,
 		};
+
+		if (action === "create") {
+			createInvoice(invoiceNumber, invoiceData);
+		} else if (action === "update") {
+		}
 	};
 
 	// Clear the invoice items table
@@ -258,7 +297,7 @@ const CreateUpdateInvoice = ({ action }) => {
 				</Title>
 				<br />
 				<SimpleGrid cols={2}>
-					<Button color="yellow.6" size="lg">
+					<Button color="yellow.6" size="lg" onClick={handleSubmit}>
 						{action === "create" ? "Submit" : "Update"}
 					</Button>
 					<HomeButton />
