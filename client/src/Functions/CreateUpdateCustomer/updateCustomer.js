@@ -12,7 +12,7 @@ const updateCustomer = (customerID, customerData) => {
 	showNotification({
 		id: "await-update",
 		title: "Form submitted",
-		message: "Updateing customer info",
+		message: "Updating customer info",
 		loading: true,
 		autoClose: false,
 		disallowClose: true,
