@@ -76,7 +76,7 @@ const CreateUpdateCustomer = ({ action }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const fetchedData = await getCustomerInfo(customerID);
-
+			console.log(fetchedData);
 			setCustomerData(fetchedData);
 		};
 

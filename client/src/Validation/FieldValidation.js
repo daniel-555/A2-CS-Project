@@ -15,9 +15,9 @@ export const validateEmail = (email) => {
 
 export const validateMobile = (number) => {
 	// Check that the given input only contains numbers & spaces
-	const validMobile = /^[0-9 ]*$/;
+	const validMobile = /^[0-9 ]{1,}$/;
 
-	if (number.match(validMobile) && number.length > 0) {
+	if (number.match(validMobile)) {
 		return true;
 	} else {
 		return false;
@@ -25,6 +25,7 @@ export const validateMobile = (number) => {
 };
 
 export const validateInvoiceNumber = (invoiceNumber) => {
+	// Check that invoice number is INV followed by 4 digits
 	const validNumber = /^INV[0-9]{4}$/;
 
 	if (invoiceNumber.match(validNumber)) {

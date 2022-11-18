@@ -33,14 +33,14 @@ const CreateUpdateInvoice = ({ action }) => {
 	const { invoice } = useParams();
 
 	const termsOfTradeData = [
-		{ label: "30 Days", value: "30" },
-		{ label: "7 Days", value: "7" },
-		{ label: "On Receipt", value: "0" },
+		{ label: "30 Days", value: 30 },
+		{ label: "7 Days", value: 7 },
+		{ label: "On Receipt", value: 0 },
 	];
 
 	// React state variables for the form, these are the variables that
-	// will be sent to the server in a database post/patch request
-	const [invoiceNumber, setInvoiceNumber] = useState();
+	// will be sent to the server in a database create/update request
+	const [invoiceNumber, setInvoiceNumber] = useState("");
 	const [customer, setCustomer] = useState(null);
 	const [termsOfTrade, setTermsOfTrade] = useState(null);
 	const [dateCreated, setDateCreated] = useState(new Date());
@@ -51,6 +51,7 @@ const CreateUpdateInvoice = ({ action }) => {
 	const [invoiceItems, setInvoiceItems] = useState([]);
 	const [itemCounter, setItemCounter] = useState(0);
 
+	// Stores the list of customers used in the customer selection field
 	const [customerData, setCustomerData] = useState([]);
 
 	const [netPrice, setNetPrice] = useState(0);
@@ -85,7 +86,6 @@ const CreateUpdateInvoice = ({ action }) => {
 	// General function for changing state of string values
 	const changeState = (value, setFunction, maxLength = 10) => {
 		if (value.length > maxLength) return;
-
 		setFunction(value);
 	};
 
@@ -101,7 +101,7 @@ const CreateUpdateInvoice = ({ action }) => {
 			setEmail(doc.email);
 		} else {
 			// Document wasn't found
-			console.error("doc not found");
+			console.error("document not found");
 		}
 	};
 
@@ -124,8 +124,9 @@ const CreateUpdateInvoice = ({ action }) => {
 
 	// Runs on loading of the page
 	useEffect(() => {
-		// Get the data for the customers selection field from the database
+		// Setup actions when the create page is loaded
 		const createPageSetup = async () => {
+		// Get the data for the customers selection field from the database
 			const customersQuery = query(collection(db, "Customers"));
 			const querySnapshot = await getDocs(customersQuery);
 
@@ -165,7 +166,7 @@ const CreateUpdateInvoice = ({ action }) => {
 								fieldMaxLengths.invoiceNumber
 							)
 						}
-						disabled={action === "update"}
+						disabled
 					/>
 					<Select
 						label="Customer"
