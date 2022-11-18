@@ -40,6 +40,7 @@ import { invalidNotification } from "../Functions/presetNotifications";
 import createInvoice from "../Functions/CreateUpdateInvoice/createInvoice";
 
 const CreateUpdateInvoice = ({ action }) => {
+	// parse the invoice number from the url
 	const { invoice } = useParams();
 
 	const termsOfTradeData = [

@@ -22,6 +22,7 @@ import updateCustomer from "../Functions/CreateUpdateCustomer/updateCustomer";
 import getCustomerInfo from "../Functions/CreateUpdateCustomer/getCustomerInfo";
 
 const CreateUpdateCustomer = ({ action }) => {
+	// Parse the customer ID from the url
 	const { customerID } = useParams();
 
 	const customerDefault = {
