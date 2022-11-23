@@ -1,7 +1,12 @@
 import { Table, Button } from "@mantine/core";
 import { BsFillTrashFill } from "react-icons/bs";
 
-const InvoiceItemTable = ({ invoiceItems, disabled, resetItemsCallback }) => {
+const InvoiceItemTable = ({
+	invoiceItems,
+	disableReset,
+	resetItemsCallback,
+}) => {
+	console.log(invoiceItems);
 	// This array stores the invoice items formatted into table rows, which can be supplied
 	// as the table's body
 	const rows = invoiceItems.map((item) => (
@@ -30,7 +35,7 @@ const InvoiceItemTable = ({ invoiceItems, disabled, resetItemsCallback }) => {
 					<th>
 						{/* This button deletes all of the invoice items and is only
 									visable when creating an invoice */}
-						{disabled || (
+						{disableReset || (
 							<Button
 								color="red"
 								variant="outline"

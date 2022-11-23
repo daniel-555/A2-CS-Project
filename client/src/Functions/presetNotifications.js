@@ -8,3 +8,11 @@ export const invalidNotification = (fieldName) => {
 		icon: <BiErrorCircle />,
 	});
 };
+
+export const notFoundNotification = (fieldName) => {
+	showNotification({
+		title: `That ${fieldName} does not exist`,
+		color: "red",
+		icon: <BiErrorCircle />,
+	});
+};
