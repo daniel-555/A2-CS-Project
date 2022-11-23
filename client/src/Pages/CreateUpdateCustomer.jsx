@@ -17,7 +17,10 @@ import fieldMaxLengths from "../Validation/FieldMaxLengths";
 // Functions
 import createCustomer from "../Functions/CreateUpdateCustomer/createCustomer";
 import { validateEmail, validateMobile } from "../Validation/FieldValidation";
-import { invalidNotification } from "../Functions/presetNotifications";
+import {
+	invalidNotification,
+	notFoundNotification,
+} from "../Functions/presetNotifications";
 import updateCustomer from "../Functions/CreateUpdateCustomer/updateCustomer";
 import getCustomerInfo from "../Functions/CreateUpdateCustomer/getCustomerInfo";
 
@@ -77,8 +80,8 @@ const CreateUpdateCustomer = ({ action }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const fetchedData = await getCustomerInfo(customerID);
-			console.log(fetchedData);
-			setCustomerData(fetchedData);
+			if (fetchedData) setCustomerData(fetchedData);
+			else notFoundNotification("customer");
 		};
 
 		// Only get customer data when on the update page

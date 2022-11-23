@@ -36,17 +36,24 @@ import { collection, getDoc, getDocs, query, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase-init";
 
 // Functions
-import { invalidNotification } from "../Functions/presetNotifications";
+import {
+	invalidNotification,
+	notFoundNotification,
+} from "../Functions/presetNotifications";
+import generateInvoiceNumber from "../Functions/CreateUpdateInvoice/generateInvoiceNumber";
 import createInvoice from "../Functions/CreateUpdateInvoice/createInvoice";
+import getInvoiceInfo from "../Functions/CreateUpdateInvoice/getInvoiceInfo";
+import updateInvoice from "../Functions/CreateUpdateInvoice/updateInvoice";
 
 const CreateUpdateInvoice = ({ action }) => {
 	// parse the invoice number from the url
 	const { invoice } = useParams();
 
+	// The values that the terms of trade selector can display
 	const termsOfTradeData = [
-		{ label: "30 Days", value: 30 },
-		{ label: "7 Days", value: 7 },
-		{ label: "On Receipt", value: 0 },
+		{ label: "30 Days", value: "30" },
+		{ label: "7 Days", value: "7" },
+		{ label: "On Receipt", value: "0" },
 	];
 
 	// React state variables for the form, these are the variables that
@@ -118,6 +125,7 @@ const CreateUpdateInvoice = ({ action }) => {
 
 	// Executes when submit button is pressed
 	const handleSubmit = () => {
+		// Validate that all fields are in the required format
 		let formOk = true;
 
 		if (validateInvoiceNumber(invoiceNumber) === false) {
@@ -136,22 +144,19 @@ const CreateUpdateInvoice = ({ action }) => {
 			customer: doc(db, "Customers", customer),
 			termsOfTrade,
 			dateCreated,
-			// Add the terms of trade days to the date the invoice was created
-			dateDue: new Date(dateCreated).setDate(
-				dateCreated.getDate() + termsOfTrade
-			),
 			email,
 			makeModelReg,
 			preInspection,
 			orderNumber,
 			invoiceItems,
-			paid: false,
+			paid: action === "create" ? false : invoicePaid,
 			datePaid: null,
 		};
 
 		if (action === "create") {
 			createInvoice(invoiceNumber, invoiceData);
 		} else if (action === "update") {
+			updateInvoice(invoiceNumber, invoiceData);
 		}
 	};
 
@@ -165,8 +170,8 @@ const CreateUpdateInvoice = ({ action }) => {
 	// Runs on loading of the page
 	useEffect(() => {
 		// Setup actions when the create page is loaded
-		const createPageSetup = async () => {
-		// Get the data for the customers selection field from the database
+		const generalActions = async () => {
+			// Get the data for the customers selection field from the database
 			const customersQuery = query(collection(db, "Customers"));
 			const querySnapshot = await getDocs(customersQuery);
 
@@ -177,9 +182,49 @@ const CreateUpdateInvoice = ({ action }) => {
 			setCustomerData(customers);
 		};
 
-		// Only runs when creating an invoice as the field is
-		// disabled otherwise
+		const createPageSetup = async () => {
+			// Auto Populate the invoice number field
+			const newInvoiceNumber = await generateInvoiceNumber();
+			setInvoiceNumber(newInvoiceNumber);
+		};
+
+		const updatePageSetup = async () => {
+			const fetchedData = await getInvoiceInfo(invoice);
+			if (fetchedData) {
+				// The invoice exists
+				const customerDoc = fetchedData.customer;
+
+				setCustomer(customerDoc.id);
+
+				setInvoiceNumber(invoice);
+				setTermsOfTrade(fetchedData.termsOfTrade);
+				setEmail(fetchedData.email);
+				setMakeModelReg(fetchedData.makeModelReg);
+				setDateCreated(fetchedData.dateCreated.toDate());
+				setPreInspection(fetchedData.preInspection);
+				setOrderNumber(fetchedData.orderNumber);
+
+				let formattedItems = [];
+				fetchedData.invoiceItems.forEach((item) => {
+					const newItem = {
+						...item,
+						date: item.date.toDate(),
+					};
+					formattedItems.push(newItem);
+				});
+				setInvoiceItems(formattedItems);
+				console.log(fetchedData.invoiceItems);
+			} else {
+				// The invoice does not
+				notFoundNotification("invoice");
+			}
+		};
+
+		generalActions();
+		// Only runs when creating an invoice
 		if (action === "create") createPageSetup();
+		// Only runs when updating an invoice
+		if (action === "update") updatePageSetup();
 	}, []);
 
 	return (
@@ -280,6 +325,7 @@ const CreateUpdateInvoice = ({ action }) => {
 				<br />
 				<InvoiceItemTable
 					invoiceItems={invoiceItems}
+					disableReset={action === "update"}
 					resetItemsCallback={resetInvoiceItems}
 				/>
 				<br />
