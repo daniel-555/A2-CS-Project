@@ -42,16 +42,7 @@ const SignedIn = () => {
 						/>
 						<Route path="view/:invoice" element={<ViewInvoice />} />
 					</Route>
-					<Route path="/database">
-						<Route
-							path="customers"
-							element={<DatabaseQuery collection="customers" />}
-						/>
-						<Route
-							path="invoices"
-							element={<DatabaseQuery collection="invoices" />}
-						/>
-					</Route>
+					<Route path="/database/:table" element={<DatabaseQuery />} />
 				</Routes>
 			</BrowserRouter>
 		</>
