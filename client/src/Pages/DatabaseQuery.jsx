@@ -7,7 +7,7 @@ import HomeButton from "../Components/HomeButton";
 
 import InvoiceTable from "../Components/DatabaseQuery/InvoiceTable";
 import { useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase-init";
 import { useParams } from "react-router-dom";
 
@@ -42,43 +42,68 @@ const DatabaseQuery = () => {
 			setTableData(formattedCustomers);
 		};
 
+		const getInvoices = async () => {
+			const querySnapshot = await getDocs(collection(db, "Invoices"));
+
+			// Extract invoices from the snapshot
+			let extractedInvoices = [];
+			querySnapshot.forEach((invoice) => extractedInvoices.push(invoice));
+
+			// Format the invoices into a more useful state
+			let formattedInvoices = [];
+			for (const invoice of extractedInvoices) {
+				const invoiceData = invoice.data();
+
+				// Get the company name from the referenced customer
+				let companyName;
+				const customerSnap = await getDoc(invoiceData.customer);
+				if (customerSnap.exists()) {
+					// Customer Exists
+					companyName = customerSnap.data().companyName;
+				} else {
+					console.error("Customer no longer exists");
+					companyName = "Deleted";
+				}
+
+				// Calculate the due date from the date the invoice was created
+				// and the terms of trade
+
+				let dateDue = invoiceData.dateCreated.toDate();
+				dateDue.setDate(
+					dateDue.getDate() + parseInt(invoiceData.termsOfTrade)
+				);
+
+				// Calculate the net and vat prices from the invoice's items
+				// and add them to calculate the total due
+
+				const netPrices = invoiceData.invoiceItems.map(
+					(item) => item.price
+				);
+				const sumNetPrices = netPrices.reduce((acc, val) => acc + val, 0);
+				const vatPrices = invoiceData.invoiceItems.map((item) => item.vat);
+				const sumVatPrices = vatPrices.reduce((acc, val) => acc + val, 0);
+				const totalPrice = sumNetPrices + sumVatPrices;
+
+				const formattedData = {
+					id: invoice.id,
+					companyName,
+					dateDue: dateDue.toDateString(),
+					totalPrice,
+				};
+
+				formattedInvoices.push(formattedData);
+			}
+
+			// Send the formatted data to the table for rendering
+			setTableData(formattedInvoices);
+		};
+
 		if (table === "customers") {
 			getCustomers();
+		} else if (table === "invoices") {
+			getInvoices();
 		}
 	}, []);
-
-	const invoiceData = [
-		{
-			id: "INV0001",
-			companyName: "Customer1",
-			dateDue: new Date().toDateString(),
-			totalPrice: 600,
-		},
-		{
-			id: "INV0002",
-			companyName: "Customer2",
-			dateDue: new Date().toDateString(),
-			totalPrice: 220,
-		},
-		{
-			id: "INV0003",
-			companyName: "Customer3",
-			dateDue: new Date().toDateString(),
-			totalPrice: 2360,
-		},
-		{
-			id: "INV0221",
-			companyName: "Customer4",
-			dateDue: new Date().toDateString(),
-			totalPrice: 877,
-		},
-		{
-			id: "INV0525",
-			companyName: "Customer5",
-			dateDue: new Date().toDateString(),
-			totalPrice: 600,
-		},
-	];
 
 	return (
 		<Card className="card center">
@@ -105,7 +130,7 @@ const DatabaseQuery = () => {
 			{table === "customers" ? (
 				<CustomerTable data={tableData} search={search} />
 			) : (
-				<InvoiceTable data={invoiceData} search={search} />
+				<InvoiceTable data={tableData} search={search} />
 			)}
 		</Card>
 	);

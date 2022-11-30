@@ -20,6 +20,7 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { BsHash, BsFillCalendarFill, BsAt } from "react-icons/bs";
 import { openModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 
 // Components
 import InvoiceItemModal from "../Components/CreateUpdateInvoice/InvoiceItemModal";
@@ -139,7 +140,14 @@ const CreateUpdateInvoice = ({ action }) => {
 		}
 		if (!validateEmail(email)) {
 			formOk = false;
-			invalidNotification("Email");
+		}
+		// Make sure the invoice actually contains items
+		if (action === "create" && itemCounter === 0) {
+			formOk = false;
+			showNotification({
+				title: "You must add at least one invoice item",
+				color: "red",
+			});
 		}
 
 		if (formOk === false) return;
@@ -370,8 +378,6 @@ const CreateUpdateInvoice = ({ action }) => {
 						checked={invoicePaid}
 						onChange={(e) => {
 							setInvoicePaid(e.target.checked);
-							console.log(invoicePaid);
-							console.log(invoicePaid);
 						}}
 					/>
 					{/* Dropdown field only shown when invoicePaid checkbox has been ticked */}

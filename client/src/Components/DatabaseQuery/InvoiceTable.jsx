@@ -1,4 +1,5 @@
 import { Table } from "@mantine/core";
+import EditButton from "./EditButton";
 
 const InvoiceTable = ({ data, search }) => {
 	// Filter the data by the search input
@@ -13,11 +14,14 @@ const InvoiceTable = ({ data, search }) => {
 			<td>{invoice.id}</td>
 			<td>{invoice.companyName}</td>
 			<td>{invoice.dateDue}</td>
-			<td>{invoice.totalPrice.toFixed(2)}</td>
+			<td>£{invoice.totalPrice.toFixed(2)}</td>
+			<td>
+				<EditButton table="invoices" id={invoice.id} />
+			</td>
 		</tr>
 	));
 	return (
-		<Table>
+		<Table highlightOnHover>
 			<thead>
 				<tr>
 					{/* These are the headers for the table */}

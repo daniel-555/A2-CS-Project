@@ -21,7 +21,7 @@ const InvoiceItemTable = ({
 	));
 
 	return (
-		<Table>
+		<Table highlightOnHover>
 			<thead>
 				<tr>
 					<th>Product/Service</th>

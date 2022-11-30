@@ -22,7 +22,7 @@ const CustomerTable = ({ data, search }) => {
 	));
 	return (
 		<>
-			<Table>
+			<Table highlightOnHover>
 				<thead>
 					<tr>
 						{/* These are the headers for the table */}
