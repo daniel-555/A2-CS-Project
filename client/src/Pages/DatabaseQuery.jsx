@@ -4,6 +4,8 @@ import { BsSearch } from "react-icons/bs";
 import { TextInput } from "@mantine/core";
 import { useState } from "react";
 import HomeButton from "../Components/HomeButton";
+
+import InvoiceTable from "../Components/DatabaseQuery/InvoiceTable";
 import { useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase-init";
@@ -45,6 +47,39 @@ const DatabaseQuery = () => {
 		}
 	}, []);
 
+	const invoiceData = [
+		{
+			id: "INV0001",
+			companyName: "Customer1",
+			dateDue: new Date().toDateString(),
+			totalPrice: 600,
+		},
+		{
+			id: "INV0002",
+			companyName: "Customer2",
+			dateDue: new Date().toDateString(),
+			totalPrice: 220,
+		},
+		{
+			id: "INV0003",
+			companyName: "Customer3",
+			dateDue: new Date().toDateString(),
+			totalPrice: 2360,
+		},
+		{
+			id: "INV0221",
+			companyName: "Customer4",
+			dateDue: new Date().toDateString(),
+			totalPrice: 877,
+		},
+		{
+			id: "INV0525",
+			companyName: "Customer5",
+			dateDue: new Date().toDateString(),
+			totalPrice: 600,
+		},
+	];
+
 	return (
 		<Card className="card center">
 			<Grid>
@@ -67,8 +102,10 @@ const DatabaseQuery = () => {
 			<br />
 			{/* This displays the table of all customers using 
 			the supplied data and search fields */}
-			{table === "customers" && (
+			{table === "customers" ? (
 				<CustomerTable data={tableData} search={search} />
+			) : (
+				<InvoiceTable data={invoiceData} search={search} />
 			)}
 		</Card>
 	);
