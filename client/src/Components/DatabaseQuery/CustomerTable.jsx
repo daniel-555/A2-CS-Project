@@ -10,7 +10,7 @@ const CustomerTable = ({ data, search }) => {
 	// This formats the data into that which the table can display
 	let rows = (search === "" ? data : filteredData).map((customer) => (
 		<tr key={customer.id}>
-			<td>{customer.customerName}</td>
+			<td>{customer.customer}</td>
 			<td>{customer.postcode}</td>
 			<td>{customer.email}</td>
 			<td>{customer.mobileNo}</td>

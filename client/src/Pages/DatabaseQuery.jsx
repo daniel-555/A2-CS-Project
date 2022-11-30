@@ -4,13 +4,14 @@ import { BsSearch } from "react-icons/bs";
 import { TextInput } from "@mantine/core";
 import { useState } from "react";
 import HomeButton from "../Components/HomeButton";
+import InvoiceTable from "../Components/DatabaseQuery/InvoiceTable";
 
 const DatabaseQuery = ({ collection }) => {
 	const [search, setSearch] = useState("");
 
 	// This is test data for the customer table.
 	// Real data will be fetched from the database
-	const data = [
+	const customerData = [
 		{
 			id: 1,
 			customerName: "Customer 1",
@@ -97,6 +98,39 @@ const DatabaseQuery = ({ collection }) => {
 		},
 	];
 
+	const invoiceData = [
+		{
+			id: "INV0001",
+			customer: "Customer1",
+			dateDue: new Date().toDateString(),
+			totalPrice: 600,
+		},
+		{
+			id: "INV0002",
+			customer: "Customer2",
+			dateDue: new Date().toDateString(),
+			totalPrice: 220,
+		},
+		{
+			id: "INV0003",
+			customer: "Customer3",
+			dateDue: new Date().toDateString(),
+			totalPrice: 2360,
+		},
+		{
+			id: "INV0221",
+			customer: "Customer4",
+			dateDue: new Date().toDateString(),
+			totalPrice: 877,
+		},
+		{
+			id: "INV0525",
+			customer: "Customer5",
+			dateDue: new Date().toDateString(),
+			totalPrice: 600,
+		},
+	];
+
 	return (
 		<Card className="card center">
 			<Grid>
@@ -119,8 +153,10 @@ const DatabaseQuery = ({ collection }) => {
 			<br />
 			{/* This displays the table of all customers using 
 			the supplied data and search fields */}
-			{collection === "customers" && (
-				<CustomerTable data={data} search={search} />
+			{collection === "customers" ? (
+				<CustomerTable data={customerData} search={search} />
+			) : (
+				<InvoiceTable data={invoiceData} search={search} />
 			)}
 		</Card>
 	);
