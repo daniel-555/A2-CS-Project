@@ -39,10 +39,7 @@ import { collection, getDoc, getDocs, query, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase-init";
 
 // Functions
-import {
-	invalidNotification,
-	notFoundNotification,
-} from "../Functions/presetNotifications";
+import { notFoundNotification } from "../Functions/presetNotifications";
 import generateInvoiceNumber from "../Functions/CreateUpdateInvoice/generateInvoiceNumber";
 import createInvoice from "../Functions/CreateUpdateInvoice/createInvoice";
 import getInvoiceInfo from "../Functions/CreateUpdateInvoice/getInvoiceInfo";
@@ -136,10 +133,11 @@ const CreateUpdateInvoice = ({ action }) => {
 
 		if (validateInvoiceNumber(invoiceNumber) === false) {
 			formOk = false;
-			invalidNotification("Invoice Number");
+			showNotification({ title: "Invalid Invoice Number", color: "red" });
 		}
 		if (!validateEmail(email)) {
 			formOk = false;
+			showNotification({ title: "Invalid Email", color: "red" });
 		}
 		// Make sure the invoice actually contains items
 		if (action === "create" && itemCounter === 0) {

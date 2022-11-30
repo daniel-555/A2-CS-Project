@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // UI-related
 import { Card, SimpleGrid, Title, TextInput, Button } from "@mantine/core";
 import { BsAt, BsCursor, BsPersonSquare, BsTelephone } from "react-icons/bs";
+import { showNotification } from "@mantine/notifications";
 
 // Routing
 import { useParams } from "react-router-dom";
@@ -17,10 +18,7 @@ import fieldMaxLengths from "../Validation/FieldMaxLengths";
 // Functions
 import createCustomer from "../Functions/CreateUpdateCustomer/createCustomer";
 import { validateEmail, validateMobile } from "../Validation/FieldValidation";
-import {
-	invalidNotification,
-	notFoundNotification,
-} from "../Functions/presetNotifications";
+import { notFoundNotification } from "../Functions/presetNotifications";
 import updateCustomer from "../Functions/CreateUpdateCustomer/updateCustomer";
 import getCustomerInfo from "../Functions/CreateUpdateCustomer/getCustomerInfo";
 import BackButton from "../Components/BackButton";
@@ -55,11 +53,11 @@ const CreateUpdateCustomer = ({ action }) => {
 		let formOk = true;
 
 		if (validateEmail(customerData.email) === false) {
-			invalidNotification("Email");
+			showNotification({ title: "Invalid Email", color: "red" });
 			formOk = false;
 		}
 		if (validateMobile(customerData.contactNo) === false) {
-			invalidNotification("Mobile");
+			showNotification({ title: "Invalid Mobile", color: "red" });
 			formOk = false;
 		}
 
