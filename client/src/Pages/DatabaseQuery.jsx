@@ -19,7 +19,6 @@ const DatabaseQuery = () => {
 	useEffect(() => {
 		const getCustomers = async () => {
 			const querySnapshot = await getDocs(collection(db, "Customers"));
-			querySnapshot.forEach((customer) => console.log(customer.id));
 
 			// Format the retrieved customer data into the desired layout
 			let formattedCustomers = [];
@@ -41,7 +40,7 @@ const DatabaseQuery = () => {
 			setTableData(formattedCustomers);
 		};
 
-		if (table == "customers") {
+		if (table === "customers") {
 			getCustomers();
 		}
 	}, []);
