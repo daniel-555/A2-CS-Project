@@ -11,7 +11,7 @@ const InvoiceTable = ({ data, search }) => {
 	const rows = (search === "" ? data : filteredData).map((invoice) => (
 		<tr key={invoice.id}>
 			<td>{invoice.id}</td>
-			<td>{invoice.customer}</td>
+			<td>{invoice.companyName}</td>
 			<td>{invoice.dateDue}</td>
 			<td>{invoice.totalPrice.toFixed(2)}</td>
 		</tr>
