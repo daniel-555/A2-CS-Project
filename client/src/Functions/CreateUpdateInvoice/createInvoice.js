@@ -20,15 +20,17 @@ const createInvoice = (invoiceNumber, invoiceData) => {
 	const docRef = doc(db, "Invoices", invoiceNumber);
 
 	// Create the document in the database
-	setDoc(docRef, invoiceData).then(() =>
+	setDoc(docRef, invoiceData).then(() => {
 		// Tell the user that the action has been completed
 		updateNotification({
 			id: "await-add",
 			title: "Invoice added",
 			icon: <AiOutlineCheck />,
 			color: "teal",
-		})
-	);
+		});
+		// Wait 1 second then refresh the page
+		setTimeout(() => window.location.reload(), 1000);
+	});
 };
 
 export default createInvoice;

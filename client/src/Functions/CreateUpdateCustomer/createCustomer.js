@@ -18,14 +18,17 @@ const createCustomer = (customerData) => {
 
 	const collectionRef = collection(db, "Customers");
 
-	addDoc(collectionRef, customerData).then(() =>
+	addDoc(collectionRef, customerData).then(() => {
 		updateNotification({
 			id: "await-add",
 			title: "Customer added",
 			icon: <AiOutlineCheck />,
 			color: "teal",
-		})
-	);
+		});
+
+		// Wait 1 second then refresh the page
+		setTimeout(() => window.location.reload(), 1000);
+	});
 };
 
 export default createCustomer;

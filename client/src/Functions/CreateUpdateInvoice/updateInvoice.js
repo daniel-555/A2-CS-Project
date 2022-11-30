@@ -8,7 +8,6 @@ import { setDoc, doc } from "firebase/firestore";
 
 const updateInvoice = (invoiceNumber, invoiceData) => {
 	const docRef = doc(db, "Invoices", invoiceNumber);
-
 	showNotification({
 		id: "await-update",
 		title: "Form submitted",
@@ -18,13 +17,17 @@ const updateInvoice = (invoiceNumber, invoiceData) => {
 		disallowClose: true,
 	});
 
-	setDoc(docRef, invoiceData).then(() =>
+	// Update the document in the database
+	setDoc(docRef, invoiceData).then(() => {
+		// Tell the user the action has been completed
 		updateNotification({
 			id: "await-update",
 			title: "Invoice updated",
 			icon: <AiOutlineCheck />,
 			color: "teal",
-		})
-	);
+		});
+		// Wait 1 second then refresh the page
+		setTimeout(() => window.location.reload(), 1000);
+	});
 };
 export default updateInvoice;
