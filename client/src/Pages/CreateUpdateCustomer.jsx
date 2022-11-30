@@ -23,6 +23,7 @@ import {
 } from "../Functions/presetNotifications";
 import updateCustomer from "../Functions/CreateUpdateCustomer/updateCustomer";
 import getCustomerInfo from "../Functions/CreateUpdateCustomer/getCustomerInfo";
+import BackButton from "../Components/BackButton";
 
 const CreateUpdateCustomer = ({ action }) => {
 	// Parse the customer ID from the url
@@ -171,7 +172,11 @@ const CreateUpdateCustomer = ({ action }) => {
 					<Button color="yellow.6" size="lg" onClick={handleSubmit}>
 						{action === "create" ? "Submit" : "Update"}
 					</Button>
-					<HomeButton />
+					{action === "create" ? (
+						<HomeButton />
+					) : (
+						<BackButton to="/database/customers" />
+					)}
 				</SimpleGrid>
 			</form>
 		</Card>

@@ -46,6 +46,7 @@ import generateInvoiceNumber from "../Functions/CreateUpdateInvoice/generateInvo
 import createInvoice from "../Functions/CreateUpdateInvoice/createInvoice";
 import getInvoiceInfo from "../Functions/CreateUpdateInvoice/getInvoiceInfo";
 import updateInvoice from "../Functions/CreateUpdateInvoice/updateInvoice";
+import BackButton from "../Components/BackButton";
 
 const CreateUpdateInvoice = ({ action }) => {
 	// parse the invoice number from the url
@@ -397,7 +398,11 @@ const CreateUpdateInvoice = ({ action }) => {
 					<Button color="yellow.6" size="lg" onClick={handleSubmit}>
 						{action === "create" ? "Submit" : "Update"}
 					</Button>
-					<HomeButton />
+					{action === "create" ? (
+						<HomeButton />
+					) : (
+						<BackButton to="/database/invoices" />
+					)}
 				</SimpleGrid>
 			</form>
 		</Card>
