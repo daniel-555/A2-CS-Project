@@ -1,12 +1,11 @@
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-// This component has the sole purpose of sending the user back to the home page,
-// regardless of where they are on the site.
+// This component has the purpose of sending the user back to the page specified when rendered
 
-const HomeButton = ({ size }) => {
+const BackButton = ({ size, to }) => {
 	const navigate = useNavigate();
 	const handleClick = () => {
-		navigate("/");
+		navigate(to);
 	};
 	return (
 		<Button
@@ -16,9 +15,9 @@ const HomeButton = ({ size }) => {
 			variant="outline"
 			onClick={handleClick}
 		>
-			Home
+			Back
 		</Button>
 	);
 };
 
-export default HomeButton;
+export default BackButton;

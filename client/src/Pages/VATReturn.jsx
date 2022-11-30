@@ -5,18 +5,35 @@ import {
 	Title,
 	Button,
 	Checkbox,
+	NumberInput,
 } from "@mantine/core";
 import { useState } from "react";
 import { BsFillCalendarFill, BsCurrencyPound } from "react-icons/bs";
 import HomeButton from "../Components/HomeButton";
 
 const VATReturn = () => {
-	const [periodKey, setPeriodKey] = useState("");
-	const [vatDueSales, setVatDueSales] = useState(0);
-	const [vatReclaimed, setVatReclaimed] = useState(0);
-	const [totalSalesExVat, setTotalSalesExVat] = useState(0);
-	const [totalPurchasesExVat, setTotalPurchasesExVat] = useState(0);
+	const vatDefault = {
+		periodKey: "",
+		vatDueSales: 0,
+		vatReclaimedCurrPeriod: 0,
+		totalValueSalesExVAT: 0,
+		totalValuePurchasesExVAT: 0,
+	};
+
+	// const [periodKey, setPeriodKey] = useState("");
+	// const [vatDueSales, setVatDueSales] = useState(0);
+	// const [vatReclaimed, setVatReclaimed] = useState(0);
+	// const [totalSalesExVat, setTotalSalesExVat] = useState(0);
+	// const [totalPurchasesExVat, setTotalPurchasesExVat] = useState(0);
 	const [finalised, setFinalised] = useState(false);
+
+	const [vatData, setVatData] = useState(vatDefault);
+
+	const changeState = (value, key, isNumber = false, maxLength = 10) => {
+		if (!isNumber) if (value.length > maxLength) return;
+
+		setVatData((vatData) => ({ ...vatData, [key]: value }));
+	};
 
 	return (
 		<Card className="card center">
@@ -27,32 +44,40 @@ const VATReturn = () => {
 					<TextInput
 						label="Period key"
 						icon={<BsFillCalendarFill />}
-						value={periodKey}
-						onChange={(e) => setPeriodKey(e.target.value)}
+						value={vatData.periodKey}
+						onChange={(e) => changeState(e.target.value, "periodKey")}
 					/>
-					<TextInput
+					<NumberInput
 						label="Vat due on sales"
 						icon={<BsCurrencyPound />}
-						value={vatDueSales}
-						onChange={(e) => setVatDueSales(e.target.value)}
+						value={vatData.vatDueSales}
+						precision={2}
+						onChange={(e) => changeState(e, "vatDueSales", true)}
 					/>
-					<TextInput
+					<NumberInput
 						label="Vat reclaimed this period"
 						icon={<BsCurrencyPound />}
-						value={vatReclaimed}
-						onChange={(e) => setVatReclaimed(e.target.value)}
+						value={vatData.vatReclaimedCurrPeriod}
+						precision={2}
+						onChange={(e) =>
+							changeState(e, "vatReclaimedCurrPeriod", true)
+						}
 					/>
-					<TextInput
+					<NumberInput
 						label="Total sales excluding VAT"
 						icon={<BsCurrencyPound />}
-						value={totalSalesExVat}
-						onChange={(e) => setTotalSalesExVat(e.target.value)}
+						value={vatData.totalValueSalesExVAT}
+						precision={2}
+						onChange={(e) => changeState(e, "totalValueSalesExVAT", true)}
 					/>
-					<TextInput
+					<NumberInput
 						label="Total purchases excluding VAT"
 						icon={<BsCurrencyPound />}
-						value={totalPurchasesExVat}
-						onChange={(e) => setTotalPurchasesExVat(e.target.value)}
+						value={vatData.totalValuePurchasesExVAT}
+						precision={2}
+						onChange={(e) =>
+							changeState(e, "totalValuePurchasesExVAT", true)
+						}
 					/>
 					<br />
 					<Checkbox
