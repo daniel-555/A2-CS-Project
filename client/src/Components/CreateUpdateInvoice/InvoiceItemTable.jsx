@@ -6,7 +6,6 @@ const InvoiceItemTable = ({
 	disableReset,
 	resetItemsCallback,
 }) => {
-	console.log(invoiceItems);
 	// This array stores the invoice items formatted into table rows, which can be supplied
 	// as the table's body
 	const rows = invoiceItems.map((item) => (

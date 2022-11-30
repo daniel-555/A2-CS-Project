@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import {
 	Button,
 	Card,
+	Checkbox,
+	Collapse,
 	Select,
 	SimpleGrid,
 	Text,
@@ -68,6 +70,8 @@ const CreateUpdateInvoice = ({ action }) => {
 	const [orderNumber, setOrderNumber] = useState("");
 	const [invoiceItems, setInvoiceItems] = useState([]);
 	const [itemCounter, setItemCounter] = useState(0);
+	const [datePaid, setDatePaid] = useState(new Date());
+	const [invoicePaid, setInvoicePaid] = useState(false);
 
 	// Stores the list of customers used in the customer selection field
 	const [customerData, setCustomerData] = useState([]);
@@ -149,8 +153,8 @@ const CreateUpdateInvoice = ({ action }) => {
 			preInspection,
 			orderNumber,
 			invoiceItems,
-			paid: action === "create" ? false : invoicePaid,
-			datePaid: null,
+			invoicePaid,
+			datePaid: invoicePaid ? datePaid : null,
 		};
 
 		if (action === "create") {
@@ -204,6 +208,14 @@ const CreateUpdateInvoice = ({ action }) => {
 				setPreInspection(fetchedData.preInspection);
 				setOrderNumber(fetchedData.orderNumber);
 
+				setInvoicePaid(fetchedData.invoicePaid);
+				// Only set the date paid if the invoice has been paid
+				if (fetchedData.invoicePaid)
+					setDatePaid(fetchedData.datePaid.toDate());
+
+				// firebase stores dates in a different format to how Mantine reads them
+				// So each invoice item must be formatted with the toDate() method
+				// Same goes with the dateCreated field above
 				let formattedItems = [];
 				fetchedData.invoiceItems.forEach((item) => {
 					const newItem = {
@@ -213,13 +225,25 @@ const CreateUpdateInvoice = ({ action }) => {
 					formattedItems.push(newItem);
 				});
 				setInvoiceItems(formattedItems);
-				console.log(fetchedData.invoiceItems);
+
+				// Get the net price for the invoice by parsing the invoice items fetched from the database
+				const netPrices = fetchedData.invoiceItems.map(
+					(item) => item.price
+				);
+				const sumNetPrices = netPrices.reduce((acc, val) => acc + val);
+				setNetPrice(sumNetPrices);
+
+				// Get the vat price from the invoice items fetched from the database
+				const vatPrices = fetchedData.invoiceItems.map((item) => item.vat);
+				const sumVatPrices = vatPrices.reduce((acc, val) => acc + val);
+				setVatPrice(sumVatPrices);
 			} else {
-				// The invoice does not
+				// The invoice does not exist
 				notFoundNotification("invoice");
 			}
 		};
 
+		// Runs on both create & update pages
 		generalActions();
 		// Only runs when creating an invoice
 		if (action === "create") createPageSetup();
@@ -304,6 +328,8 @@ const CreateUpdateInvoice = ({ action }) => {
 						value={dateCreated}
 						onChange={setDateCreated}
 						disabled={action === "update"}
+						// Invoice cannot have been created in the future
+						maxDate={new Date()}
 					/>
 					<TextInput
 						label="Pre Inspection/Mileage"
@@ -328,14 +354,38 @@ const CreateUpdateInvoice = ({ action }) => {
 					disableReset={action === "update"}
 					resetItemsCallback={resetInvoiceItems}
 				/>
-				<br />
 				{/* This button opens the add item modal and is only visable when creating an invoice */}
+				<br />
 				{action === "create" && (
 					<Button onClick={() => addItem()} color="yellow.6">
 						Add item
 					</Button>
 				)}
 				<br />
+				<br />
+				<SimpleGrid cols={1} span={8}>
+					<Checkbox
+						label="Invoice Has Been Paid"
+						checked={invoicePaid}
+						onChange={(e) => {
+							setInvoicePaid(e.target.checked);
+							console.log(invoicePaid);
+							console.log(invoicePaid);
+						}}
+					/>
+					{/* Dropdown field only shown when invoicePaid checkbox has been ticked */}
+					<Collapse in={invoicePaid}>
+						<DatePicker
+							label="Date Paid"
+							value={datePaid}
+							onChange={setDatePaid}
+							// Cannot have paid the invoice before it was created
+							minDate={dateCreated}
+							// Cannot have been paid if date is after today
+							maxDate={new Date()}
+						/>
+					</Collapse>
+				</SimpleGrid>
 				<br />
 				<Text size="xl">Net: £{netPrice.toFixed(2)}</Text>
 				<Text size="xl">VAT: £{vatPrice.toFixed(2)}</Text>
