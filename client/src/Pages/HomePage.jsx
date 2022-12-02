@@ -43,6 +43,16 @@ const HomePage = () => {
 					Search Customers
 				</Button>
 			</SimpleGrid>
+			<br />
+			<Button
+				fullWidth
+				size="xl"
+				variant="gradient"
+				gradient={{ from: "yellow.6", to: "orange.6" }}
+				onClick={() => navigate("/vat-return")}
+			>
+				Submit A VAT Return
+			</Button>
 		</Card>
 	);
 };
