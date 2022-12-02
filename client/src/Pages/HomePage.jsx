@@ -1,21 +1,45 @@
+// UI-Related
 import { Button, Card, SimpleGrid, Title } from "@mantine/core";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
 const HomePage = () => {
+	const navigate = useNavigate();
+
 	return (
 		<Card className="card center">
 			<Title order={1}>Welcome to &lt;PROJECT_NAME&gt;</Title>
 			<br />
 			<SimpleGrid cols={2}>
-				<Button size="xl" color="yellow.6">
+				<Button
+					size="xl"
+					color="yellow.6"
+					onClick={() => navigate("/invoice/create")}
+				>
 					Create An Invoice
 				</Button>
-				<Button size="xl" variant="outline" color="yellow.6">
+				<Button
+					size="xl"
+					variant="outline"
+					color="yellow.6"
+					onClick={() => navigate("/database/invoices")}
+				>
 					Search Invoices
 				</Button>
-				<Button size="xl" color="orange.6">
+				<Button
+					size="xl"
+					color="orange.6"
+					onClick={() => navigate("/customer/create")}
+				>
 					Create A Customer
 				</Button>
-				<Button size="xl" color="orange.6" variant="outline">
+				<Button
+					size="xl"
+					color="orange.6"
+					variant="outline"
+					onClick={() => navigate("/database/customers")}
+				>
 					Search Customers
 				</Button>
 			</SimpleGrid>
