@@ -19,6 +19,7 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { BsHash, BsFillCalendarFill, BsAt } from "react-icons/bs";
+import { TiWarningOutline } from "react-icons/ti";
 import { openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 
@@ -186,7 +187,8 @@ const CreateUpdateInvoice = ({ action }) => {
 			const customersQuery = query(collection(db, "Customers"));
 			const querySnapshot = await getDocs(customersQuery);
 
-			let customers = [];
+			// Field that displays when an invoice's customer has been deleted
+			let customers = ["Deleted"];
 			querySnapshot.forEach((doc) => {
 				customers.push({ label: doc.data().companyName, value: doc.id });
 			});
@@ -205,7 +207,21 @@ const CreateUpdateInvoice = ({ action }) => {
 				// The invoice exists
 				const customerDoc = fetchedData.customer;
 
-				setCustomer(customerDoc.id);
+				// Check if the customer referenced still exists
+				getDoc(customerDoc).then((docSnap) => {
+					if (docSnap.exists()) {
+						// The customer exists
+						setCustomer(customerDoc.id);
+					} else {
+						showNotification({
+							title: "This invoice's customer is no longer in the database",
+							color: "yellow.6",
+							icon: <TiWarningOutline />,
+						});
+						setCustomer("Deleted");
+					}
+				});
+				// setCustomer(customerDoc.id);
 
 				setInvoiceNumber(invoice);
 				setTermsOfTrade(fetchedData.termsOfTrade);
