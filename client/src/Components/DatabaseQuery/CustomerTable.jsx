@@ -1,5 +1,6 @@
 import { Table } from "@mantine/core";
 import EditButton from "./EditButton";
+import DeleteCustomerButton from "./DeleteCustomerButton";
 
 const CustomerTable = ({ data, search }) => {
 	// The .filter method takes in an array and outputs a new array
@@ -18,6 +19,9 @@ const CustomerTable = ({ data, search }) => {
 			<td>
 				<EditButton table="customers" id={customer.id} />
 			</td>
+			<td>
+				<DeleteCustomerButton id={customer.id} />
+			</td>
 		</tr>
 	));
 	return (
@@ -31,6 +35,8 @@ const CustomerTable = ({ data, search }) => {
 						<th>Email</th>
 						<th>Contact Number</th>
 						{/* The header below is where the edit button is rendered */}
+						<th></th>
+						{/* This header is where the delete button is rendered */}
 						<th></th>
 					</tr>
 				</thead>

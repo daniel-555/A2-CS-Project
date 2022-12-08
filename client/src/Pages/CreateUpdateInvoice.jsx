@@ -187,8 +187,8 @@ const CreateUpdateInvoice = ({ action }) => {
 			const customersQuery = query(collection(db, "Customers"));
 			const querySnapshot = await getDocs(customersQuery);
 
-			// Field that displays when an invoice's customer has been deleted
-			let customers = ["Deleted"];
+			// Field that displays when an invoice's customer has been deleted if the page is set to update but not create
+			let customers = action === "update" ? ["Deleted"] : [];
 			querySnapshot.forEach((doc) => {
 				customers.push({ label: doc.data().companyName, value: doc.id });
 			});
