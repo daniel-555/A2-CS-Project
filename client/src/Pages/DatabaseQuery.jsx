@@ -84,6 +84,8 @@ const DatabaseQuery = () => {
 				const sumVatPrices = vatPrices.reduce((acc, val) => acc + val, 0);
 				const totalPrice = sumNetPrices + sumVatPrices;
 
+				// Put the data in the required format
+
 				const formattedData = {
 					id: invoice.id,
 					companyName,
@@ -111,7 +113,11 @@ const DatabaseQuery = () => {
 				<Grid.Col span={8}>
 					{/* This search field updates the results in real time */}
 					<TextInput
-						placeholder={`Search ${table} by name`}
+						placeholder={
+							table === "invoices"
+								? "Search invoices by ID"
+								: "Search customers by name"
+						}
 						size="md"
 						icon={<BsSearch />}
 						value={search}
