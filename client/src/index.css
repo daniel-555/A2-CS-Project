@@ -1,3 +1,4 @@
+/* Base Colours */
 :root {
 	--accent: #fcba03;
 	--primary: #515151;
@@ -23,6 +24,7 @@ body {
 	transform: translate(-50%, -50%);
 }
 
+/* Default formatting for the card component (used as the background for all forms) */
 .card {
 	padding: 2rem 3rem;
 	box-shadow: 7.5px 5px 10px rgba(0, 0, 0, 0.2);

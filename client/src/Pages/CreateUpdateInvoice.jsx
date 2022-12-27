@@ -21,13 +21,17 @@ import HomeButton from "../Components/HomeButton";
 import InvoiceItemTable from "../Components/CreateUpdateInvoice/InvoiceItemTable";
 
 const CreateUpdateInvoice = ({ action }) => {
+	// Invoice number extracted from url query params
 	const { invoice } = useParams();
 
-	// Filler data for customer selection, will be filled with actual customers in future
+	// Filler data for customer selection, will be filled with actual customers in prototype 3
 	const customerData = Array(50)
 		.fill(0)
 		.map((_, index) => `Customer ${index}`);
 
+	/* Initialises selections for termsOfTrade field. label is displayed to the user and value is stored in the database.
+	Number values can be used to calculate due date when qeuerying the database
+	 */
 	const termsOfTradeData = [
 		{ label: "30 Days", value: "30" },
 		{ label: "7 Days", value: "7" },
@@ -54,15 +58,18 @@ const CreateUpdateInvoice = ({ action }) => {
 	// to the list invoiceItems
 	const addItem = () => {
 		// This callback function allows the InvoiceItemModal component to alter the state
-		// of its parent component.
+		// of its parent component (i.e. this one).
 		const addItemCallback = (newItem) => {
+			// Appends the new item to the invoiceItems state
 			setInvoiceItems([...invoiceItems, newItem]);
 			setItemCounter(itemCounter + 1);
 
+			// update the displayed net and vat prices
 			setNetPrice(netPrice + newItem.price);
 			setVatPrice(vatPrice + newItem.vat);
 		};
 
+		// Opens the modal that displays the InvoiceItemModal component
 		openModal({
 			title: <Title order={1}>Add an Item</Title>,
 			centered: true,
@@ -73,6 +80,7 @@ const CreateUpdateInvoice = ({ action }) => {
 		});
 	};
 
+	// passed as the reset callback for the delete button in the InvoiceItemTable component
 	const resetInvoiceItems = () => {
 		setInvoiceItems([]);
 		setNetPrice(0);
@@ -97,6 +105,7 @@ const CreateUpdateInvoice = ({ action }) => {
 						icon={<BsHash />}
 						value={action === "create" ? invoiceNumber : invoice}
 						onChange={(e) => setInvoiceNumber(e.target.value)}
+						// Fields that have the disabled tag are only editable on a specific page such as the create page
 						disabled={action === "update"}
 					/>
 					<Select
@@ -149,6 +158,7 @@ const CreateUpdateInvoice = ({ action }) => {
 					/>
 				</SimpleGrid>
 				<br />
+				{/* Renders the invoice item table */}
 				<InvoiceItemTable
 					invoiceItems={invoiceItems}
 					resetItemsCallback={resetInvoiceItems}
@@ -162,12 +172,14 @@ const CreateUpdateInvoice = ({ action }) => {
 				)}
 				<br />
 				<br />
+				{/* Displays the net and vat prices then calculates the total balance due */}
 				<Text size="xl">Net: £{netPrice.toFixed(2)}</Text>
 				<Text size="xl">VAT: £{vatPrice.toFixed(2)}</Text>
 				<Title order={3}>
 					Balance Due: £{(netPrice + vatPrice).toFixed(2)}
 				</Title>
 				<br />
+				{/* Display the submit and home buttons side by side in a grid */}
 				<SimpleGrid cols={2}>
 					<Button color="yellow.6" size="lg">
 						{action === "create" ? "Submit" : "Update"}
@@ -178,7 +190,5 @@ const CreateUpdateInvoice = ({ action }) => {
 		</Card>
 	);
 };
-
-// This page will allow the user to create a new invoice or edit details on an existing one
 
 export default CreateUpdateInvoice;

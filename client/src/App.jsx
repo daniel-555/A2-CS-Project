@@ -9,6 +9,8 @@ import VATReturn from "./Pages/VATReturn";
 
 const App = () => {
 	return (
+		// MantineProvider and ModalsProvider give a workspace when the UI will function properly.
+		// They are components that "provide" extra data for the libraries to work
 		<MantineProvider>
 			<ModalsProvider>
 				<BrowserRouter>

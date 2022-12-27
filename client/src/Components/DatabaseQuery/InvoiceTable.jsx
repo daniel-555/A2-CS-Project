@@ -28,6 +28,7 @@ const InvoiceTable = ({ data, search }) => {
 					<th></th>
 				</tr>
 			</thead>
+			{/* Render the body of the table */}
 			<tbody>{rows}</tbody>
 		</Table>
 	);

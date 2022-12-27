@@ -1,16 +1,20 @@
-import { Card, Grid } from "@mantine/core";
-import CustomerTable from "../Components/DatabaseQuery/CustomerTable";
+// UI-Related
+import { Card, Grid, TextInput } from "@mantine/core";
 import { BsSearch } from "react-icons/bs";
-import { TextInput } from "@mantine/core";
-import { useState } from "react";
 import HomeButton from "../Components/HomeButton";
+
+// React Base
+import { useState } from "react";
+
+// Custom Components
 import InvoiceTable from "../Components/DatabaseQuery/InvoiceTable";
+import CustomerTable from "../Components/DatabaseQuery/CustomerTable";
 
 const DatabaseQuery = ({ collection }) => {
 	const [search, setSearch] = useState("");
 
 	// This is test data for the customer table.
-	// Real data will be fetched from the database
+	// Real data will be fetched from the database in prototype 3
 	const customerData = [
 		{
 			id: 1,
@@ -98,6 +102,8 @@ const DatabaseQuery = ({ collection }) => {
 		},
 	];
 
+	// This data is filler for the invoice table
+	// It will also be replaced with database records in prototype 3
 	const invoiceData = [
 		{
 			id: "INV0001",
@@ -133,6 +139,7 @@ const DatabaseQuery = ({ collection }) => {
 
 	return (
 		<Card className="card center">
+			{/* Grid is preferred over SimpleGrid here as the columns will have different widths */}
 			<Grid>
 				<Grid.Col span={8}>
 					{/* This search field updates the results in real time */}
@@ -161,8 +168,5 @@ const DatabaseQuery = ({ collection }) => {
 		</Card>
 	);
 };
-
-// This component will allow the user to query both the customers and invoices database.
-// The results will be shown in a table with all relevant data displayed.
 
 export default DatabaseQuery;

@@ -28,6 +28,7 @@ const CustomerTable = ({ data, search }) => {
 						<th>Mobile Number</th>
 					</tr>
 				</thead>
+				{/* Render the body of the table */}
 				<tbody>{rows}</tbody>
 			</Table>
 		</>

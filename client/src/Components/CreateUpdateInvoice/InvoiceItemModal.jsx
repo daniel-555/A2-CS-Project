@@ -1,3 +1,4 @@
+// UI-Related
 import {
 	Button,
 	NumberInput,
@@ -9,10 +10,13 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { closeAllModals } from "@mantine/modals";
-import { useState } from "react";
 import { BsCurrencyPound, BsFillCalendarFill } from "react-icons/bs";
 
+// React Base
+import { useState } from "react";
+
 const InvoiceItemModal = ({ callback, id }) => {
+	// Initiate the state variables for the form
 	const [service, setService] = useState("");
 	const [description, setDescription] = useState("");
 	const [quantity, setQuantity] = useState(1);
@@ -20,14 +24,19 @@ const InvoiceItemModal = ({ callback, id }) => {
 	const [price, setPrice] = useState(0);
 	const [dateCreated, setDateCreated] = useState(new Date());
 
+	// Selection options for vatRate field
+	// Labels are displayed and values are used in calculations
 	const vatRateData = [
 		{ label: "20%", value: 0.2 },
 		{ label: "Exempt", value: "NA" },
 		{ label: "Zero", value: 0 },
 	];
 
+	// The form has been submitted
 	const handleButtonPressed = () => {
+		// Used to display the VAT rate in a user-friendly format
 		let formattedVatRate;
+		// Determine which VAT rate has been used on the item
 		switch (vatRate) {
 			case 0.2:
 				formattedVatRate = "20%";
@@ -40,6 +49,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 				break;
 		}
 
+		// run the callback function passed in CreateUpdateInvoice.jsx ( same function as onSubmit )
 		callback({
 			id,
 			service,
@@ -50,6 +60,7 @@ const InvoiceItemModal = ({ callback, id }) => {
 			vat: vatPrice,
 			date: dateCreated,
 		});
+		// Closes the modal once the form has been submitted
 		closeAllModals();
 	};
 

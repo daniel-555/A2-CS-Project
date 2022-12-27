@@ -1,11 +1,14 @@
+// UI-Related
 import { Button, Card, SimpleGrid, Title } from "@mantine/core";
 
 const HomePage = () => {
 	return (
 		<Card className="card center">
+			{/* <PROJECT_NAME> will be replaced with the actual project name once my stakeholders come up with a name in either prototype 3 or 4 */}
 			<Title order={1}>Welcome to &lt;PROJECT_NAME&gt;</Title>
 			<br />
 			<SimpleGrid cols={2}>
+				{/* Displays 4 buttons to direct the user to each page of the website */}
 				<Button size="xl" color="yellow.6">
 					Create An Invoice
 				</Button>
@@ -22,8 +25,5 @@ const HomePage = () => {
 		</Card>
 	);
 };
-
-// This is the website's home page.
-// The app's title and my stakeholder's business logo will be displayed here, along with links to all other pages.
 
 export default HomePage;

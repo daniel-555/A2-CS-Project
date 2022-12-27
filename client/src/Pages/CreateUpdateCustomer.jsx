@@ -1,10 +1,18 @@
+// UI-Related
 import { Card, SimpleGrid, Title, TextInput, Button } from "@mantine/core";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { BsAt, BsCursor, BsPersonSquare, BsTelephone } from "react-icons/bs";
+
+// React Base
+import { useState } from "react";
+
+// React Router
+import { useParams } from "react-router-dom";
+
+// Custom components
 import HomeButton from "../Components/HomeButton";
 
 const CreateUpdateCustomer = ({ action }) => {
+	// customer ID extracted from url query params
 	const { customer } = useParams();
 
 	const [companyName, setCompanyName] = useState();
@@ -18,6 +26,7 @@ const CreateUpdateCustomer = ({ action }) => {
 		<Card className="card center">
 			<form>
 				<Title order={1}>
+					{/* Different content displayed based on if the page is create or update */}
 					{action === "create"
 						? "Create a Customer"
 						: `Update ${customer}'s Details`}
@@ -62,6 +71,7 @@ const CreateUpdateCustomer = ({ action }) => {
 				<br />
 				<br />
 				<SimpleGrid cols={2}>
+					{/* This button will run all validations then send data off to the database to be created or updated based on the page action */}
 					<Button color="yellow.6" size="lg">
 						{action === "create" ? "Submit" : "Update"}
 					</Button>
@@ -71,7 +81,5 @@ const CreateUpdateCustomer = ({ action }) => {
 		</Card>
 	);
 };
-
-// This component will allow the user to create a new customer or edit the details of an existing one
 
 export default CreateUpdateCustomer;

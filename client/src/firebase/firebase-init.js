@@ -6,13 +6,10 @@ import { getAuth } from "firebase/auth";
 
 import firebaseConfig from "./firebase-credentials";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-// This file initalises firebase and allows my program to edit its online database
+// This file initalises firebase and allows my program to interact with its sdk

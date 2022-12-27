@@ -1,3 +1,4 @@
+// UI-Related
 import {
 	Card,
 	SimpleGrid,
@@ -6,8 +7,12 @@ import {
 	Button,
 	Checkbox,
 } from "@mantine/core";
-import { useState } from "react";
 import { BsFillCalendarFill, BsCurrencyPound } from "react-icons/bs";
+
+// React Base
+import { useState } from "react";
+
+// Custom Components
 import HomeButton from "../Components/HomeButton";
 
 const VATReturn = () => {
@@ -55,12 +60,14 @@ const VATReturn = () => {
 						onChange={(e) => setTotalPurchasesExVat(e.target.value)}
 					/>
 					<br />
+					{/* The user will have to confirm that data inputted is correct to make sure that they are not sending incorrect data to HMRC */}
 					<Checkbox
 						value={finalised}
 						onChange={setFinalised}
 						label="I confirm this data is correct"
 					/>
 					<br />
+					{/* The user will be authenticated with HMRC and follow the flowchart as shown in my design stage */}
 					<Button fullWidth size="lg" color="yellow.6">
 						Submit
 					</Button>
@@ -70,7 +77,5 @@ const VATReturn = () => {
 		</Card>
 	);
 };
-
-// This page will allow the user to submit a VAT return to HMRC, putting them through the necessary authentication to do so.
 
 export default VATReturn;

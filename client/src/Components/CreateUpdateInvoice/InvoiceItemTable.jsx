@@ -1,3 +1,4 @@
+// UI-Related
 import { Table, Button } from "@mantine/core";
 import { BsFillTrashFill } from "react-icons/bs";
 
@@ -30,6 +31,7 @@ const InvoiceItemTable = ({ invoiceItems, disabled, resetItemsCallback }) => {
 					<th>
 						{/* This button deletes all of the invoice items and is only
 									visable when creating an invoice */}
+						{/* This is done by using a callback function to edit the state of the parent component */}
 						{disabled || (
 							<Button
 								color="red"
@@ -43,6 +45,7 @@ const InvoiceItemTable = ({ invoiceItems, disabled, resetItemsCallback }) => {
 					</th>
 				</tr>
 			</thead>
+			{/* Render the body of the table using the formatted array rows as data */}
 			<tbody>{rows}</tbody>
 		</Table>
 	);
