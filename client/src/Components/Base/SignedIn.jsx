@@ -11,6 +11,7 @@ import VATReturn from "../../Pages/VATReturn";
 import SignOutButton from "../SignOutButton";
 
 const SignedIn = () => {
+	// This component is rendered when the user is signed in
 	return (
 		<>
 			<SignOutButton />
