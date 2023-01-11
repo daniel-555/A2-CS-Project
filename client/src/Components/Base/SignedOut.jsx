@@ -1,5 +1,5 @@
 // UI-related
-import { Button, Card, Title } from "@mantine/core";
+import { Button, Card, Text, Title } from "@mantine/core";
 import { FcGoogle } from "react-icons/fc";
 
 // Firebase (backend)
@@ -13,8 +13,9 @@ const SignedOut = () => {
 	};
 
 	return (
-		<Card className="card center">
-			<Title order={1}>Welcome to &lt;PROJECT NAME&gt;</Title>
+		<Card className="card center" sx={{ width: "40%", textAlign: "center" }}>
+			<Title order={1}>Welcome to VIMS</Title>
+			<Text>The VAT and Invoice Management System</Text>
 			<br />
 			<Button
 				size="xl"
