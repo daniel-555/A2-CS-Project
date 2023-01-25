@@ -1,5 +1,5 @@
 // UI-Related
-import { Button, Card, SimpleGrid, Title } from "@mantine/core";
+import { Button, Card, SimpleGrid, Text, Title } from "@mantine/core";
 
 // React Router
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,8 @@ const HomePage = () => {
 
 	return (
 		<Card className="card center">
-			<Title order={1}>Welcome to &lt;PROJECT_NAME&gt;</Title>
+			<Title order={1}>Welcome to VIMS</Title>
+			<Text>The VAT and Invoice Management System</Text>
 			<br />
 			<SimpleGrid cols={2}>
 				<Button
