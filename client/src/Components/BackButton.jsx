@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 const BackButton = ({ size, to }) => {
 	const navigate = useNavigate();
+
+	// Redirect the user back to the provided page
 	const handleClick = () => {
 		navigate(to);
 	};
 	return (
 		<Button
 			fullWidth
+			// size defaults to large but can be altered
 			size={size || "lg"}
 			color="gray.7"
 			variant="outline"

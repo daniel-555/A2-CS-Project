@@ -75,11 +75,13 @@ const CreateUpdateCustomer = ({ action }) => {
 		}
 	};
 
-	// Runs when the page is "mounted" (ie when it is first loaded)
+	// Runs when the component is "mounted" (ie when it is first loaded)
 	useEffect(() => {
+		// retrieve the customer's info using their ID given by the url
 		const fetchData = async () => {
 			const fetchedData = await getCustomerInfo(customerID);
 			if (fetchedData) setCustomerData(fetchedData);
+			// The ID searched for wasn't found
 			else notFoundNotification("customer");
 		};
 

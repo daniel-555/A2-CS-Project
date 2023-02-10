@@ -7,6 +7,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebase-init";
 
 const SignedOut = () => {
+	// Sign the user in using their google account
 	const signInWithGoogle = () => {
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider);

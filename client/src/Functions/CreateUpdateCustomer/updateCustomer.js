@@ -9,6 +9,7 @@ import { setDoc, doc } from "firebase/firestore";
 const updateCustomer = (customerID, customerData) => {
 	const docRef = doc(db, "Customers", customerID);
 
+	// Tell the user that the action has started
 	showNotification({
 		id: "await-update",
 		title: "Form submitted",
@@ -18,6 +19,7 @@ const updateCustomer = (customerID, customerData) => {
 		disallowClose: true,
 	});
 
+	// Update the customer in the database then tell the user that the action has completed
 	setDoc(docRef, customerData).then(() => {
 		updateNotification({
 			id: "await-update",
